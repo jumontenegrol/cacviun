@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./../styles/App.css";
-import { useAuth } from "./../context/context.jsx";
+// import { useNavigate } from "react-router-dom";
+// import { useAuth } from "./../context/context.jsx";
 
 function Login() {
+  // 🔸 Estados y lógica de autenticación desactivados temporalmente:
+  /*
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setRol } = useAuth();
@@ -44,20 +47,24 @@ function Login() {
       setError("Error de comunicación con el backend");
     }
   };
+  */
 
+  // 🔹 Interfaz estática del login:
   return (
     <div className="background">
       <div className="header">CACVi-UN</div>
       <div className="login-box">
         <h1>Login</h1>
         <p>Sign in to continue</p>
-        <form onSubmit={validarLogin}>
+
+        {/* 🔸 El formulario ya no tiene validaciones ni submit */}
+        <form>
           <label>Email</label>
           <input
             type="email"
             placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            // value={email}
+            // onChange={(e) => setEmail(e.target.value)}
             required
           />
 
@@ -65,15 +72,16 @@ function Login() {
           <input
             type="password"
             placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            // value={password}
+            // onChange={(e) => setPassword(e.target.value)}
             required
           />
 
-          {error && <p style={{ color: "black" }}>{error}</p>}
+          {/* {error && <p style={{ color: "black" }}>{error}</p>} */}
 
           <button type="submit">Login</button>
         </form>
+
         <div className="separator">Or</div>
         <Link to="/register">
           <button className="secondary">Create Account</button>
