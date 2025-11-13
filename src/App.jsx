@@ -1,26 +1,13 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./vistas/Login.jsx";
 
-function App() {
-  const styles = {
-    container: {
-      backgroundColor: "#007bff", // azul
-      color: "white",
-      height: "100vh", // ocupa toda la altura de la ventana
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      fontSize: "2rem",
-      fontFamily: "Arial, sans-serif",
-      margin: 0,
-      overflow: "hidden", // evita scroll
-    },
-  };
-
+export default function App() {
   return (
-    <div style={styles.container}>
-      APP desplegada 🚀
-    </div>
+    <BrowserRouter basename="/cacviun"> {/* <- IMPORTANTE para GitHub Pages */}
+      <Routes>
+        <Route path="/" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;
