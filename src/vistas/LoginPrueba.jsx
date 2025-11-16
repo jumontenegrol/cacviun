@@ -95,7 +95,7 @@ function LoginPrueba() {
         <div className="separator">Or</div>
 
         <button
-          className="secondary"
+          className="text-link"
           type="button"
           onClick={handleCreateAccountClick}
         >

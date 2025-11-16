@@ -3,19 +3,21 @@
 * {
   box-sizing: border-box;
 }
+
+/* --- Background + layout --- */
 .background {
   background-image: url("./../assets/Edificio_de_Medicina.jpg");
   background-size: cover;
   background-position: center;
   min-height: 100vh;
-  padding-top: 6rem;
+  padding-top: 6rem; /* espacio para header */
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  justify-content: center; /* contenido centrado horizontal */
+  align-items: flex-start;  /* empezar desde arriba (debajo del header) */
   position: relative;
 }
 
+/* --- Header decorativo (fijo en la parte superior) --- */
 .header {
   background-color: rgba(128, 0, 128, 0.5);
   color: white;
@@ -29,44 +31,79 @@
   left: 0;
   z-index: 10;
 }
+
+/* --- Login Box: proporciones y inputs --- */
+/* ahora más ancho en escritorio, mejor padding, centrado verticalmente dentro del área visible */
 .login-box {
-  background-color: rgba(128, 0, 128, 0.5);
+  background-color: rgba(128, 0, 128, 0.6);
   color: white;
-  padding: 2rem;
+  padding: 2.2rem;
   border-radius: 20px;
-  width: 300px;
-  text-align: center;
+  width: 100%;
+  max-width: 420px;   /* Aumentado para mejor proporción */
+  text-align: left;   /* labels a la izquierda para mejor lectura */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  margin: 2rem;       /* separación respecto al borde */
 }
 
+/* Título centrado interno, pero el resto alineado a la izquierda */
 .login-box h1 {
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.25rem 0;
+  text-align: center;
+  font-size: 1.6rem;
 }
 
 .login-box p {
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
+  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+  text-align: center;
 }
 
+/* Form layout: labels encima de inputs, buen gap */
 .login-box form {
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
-  margin-bottom: 1rem;
+  gap: 0.9rem;
+  margin-top: 0.5rem;
 }
 
+/* Labels más visibles, tamaño cómodo */
+.login-box label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  color: #fff;
+}
+
+/* Inputs: mayor altura y padding para click/tap cómodo */
 .login-box input {
-  padding: 0.5rem;
+  padding: 0.75rem 0.9rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  width: 100%;
+  background: #fff;
+  color: #222;
+}
+
+/* Botones: tamaño coherente y centrado */
+.login-box .actions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: 0.6rem;
 }
 
 .login-box button {
   background-color: #4b1959;
   color: white;
   border: none;
-  padding: 0.6rem;
-  border-radius: 5px;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
   cursor: pointer;
+  font-weight: 700;
+  min-width: 120px;
 }
 
 .secondary {
@@ -74,8 +111,69 @@
   border: 1px solid white;
 }
 
+/* separator */
 .separator {
-  margin: 0.5rem 0;
-  font-weight: normal;
-  font-size: 0.8rem;
+  margin: 0.6rem 0;
+  font-weight: 400;
+  font-size: 0.9rem;
+  text-align: center;
 }
+
+/* Ajustes móviles: caja ocupa casi todo el ancho y espaciado reducido */
+@media (max-width: 480px) {
+  .background {
+    padding-top: 5.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .login-box {
+    max-width: 100%;
+    padding: 1.2rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    text-align: left;
+  }
+
+  .login-box h1 {
+    font-size: 1.4rem;
+  }
+
+  .login-box input {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .login-box button {
+    padding: 0.6rem 0.8rem;
+    min-width: 100px;
+  }
+
+  button.text-link {
+  all: unset;               /* quita todos los estilos por defecto */
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;           /* color del texto (ajusta si quieres) */
+  text-decoration: underline;
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 0;               /* sin padding */
+  margin: 0.4rem 0;         /* separación vertical opcional */
+  text-align: left;
+  }
+
+  /* hover / focus accesible */
+  button.text-link:hover,
+  button.text-link:focus {
+    opacity: 0.9;
+    text-decoration: none;
+    outline: none;
+  }
+
+  /* si quieres que esté alineado a la derecha en el contenedor */
+  .text-link-right {
+    display: inline-block;
+    margin-left: auto;
+  }
+}
+

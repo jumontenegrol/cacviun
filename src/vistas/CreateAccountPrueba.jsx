@@ -133,7 +133,7 @@ function CreateAccountPrueba() {
         <div className="separator">Already Registered?</div>
 
         <button
-          className="secondary"
+          className="text-link"
           type="button"
           onClick={handleReturnLoginClick}
         >
