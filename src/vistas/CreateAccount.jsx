@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./../styles/App.css";
 
-function CreateAccountPrueba() {
+function CreateAccount() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -146,4 +146,4 @@ function CreateAccountPrueba() {
   );
 }
 
-export default CreateAccountPrueba;
+export default CreateAccount;

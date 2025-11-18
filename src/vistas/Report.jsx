@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./../styles/Report.css";
-import HeaderPrueba from "./../components/HeaderPrueba";
+import Header from "../components/Header";
 
 // ==================================================
 // 🔽 LISTA DE OPCIONES PARA "TYPE OF VIOLENCE"
@@ -18,7 +18,7 @@ const violenceTypes = [
   "Harassment",
 ];
 
-function ReportPrueba() {
+function Report() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState("");
@@ -83,7 +83,7 @@ function ReportPrueba() {
 
   return (
     <div className="report-container">
-      <HeaderPrueba />
+      <Header />
 
       <div className="report-content">
         <div className="form-header-text">
@@ -208,4 +208,4 @@ function ReportPrueba() {
   );
 }
 
-export default ReportPrueba;
+export default Report;

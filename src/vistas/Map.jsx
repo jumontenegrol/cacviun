@@ -1,11 +1,11 @@
 import React from "react";
 import "./../styles/Report.css";
-import HeaderPrueba from "./../components/HeaderPrueba";
+import Header from "../components/Header";
 
-function MapPrueba() {
+function Map() {
   return (
     <div className="report-container">
-      <HeaderPrueba view="map" />
+      <Header view="map" />
 
       <div className="report-content">
         <h1
@@ -57,4 +57,4 @@ function MapPrueba() {
   );
 }
 
-export default MapPrueba;
+export default Map;

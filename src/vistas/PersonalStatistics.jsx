@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import HeaderPrueba from "./../components/HeaderPrueba";
+import Header from "../components/Header";
 import "./../styles/Statistics.css";
 
-function PersonalStatisticsPrueba() {
+function PersonalStatistics() {
   // Lista local vacía que luego será reemplazada por datos del backend
   const [incidentes, setIncidentes] = useState([
     // Ejemplo de estructura (no se llena):
@@ -19,7 +19,7 @@ function PersonalStatisticsPrueba() {
 
   return (
     <div className="Statistics-container">
-      <HeaderPrueba view="statistics" />
+      <Header view="statistics" />
 
       <div className="Statistics-content">
         <h1
@@ -85,4 +85,4 @@ function PersonalStatisticsPrueba() {
   );
 }
 
-export default PersonalStatisticsPrueba;
+export default PersonalStatistics;
