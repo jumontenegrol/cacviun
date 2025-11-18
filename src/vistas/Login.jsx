@@ -13,7 +13,7 @@ function Login() {
   // ==================================================
   // 🔥 VALIDACIÓN LOCAL Y MANEJO DEL BOTÓN LOGIN
   // ==================================================
-  const handleLoginClick = () => {
+  const handleLoginClick = async () => {
     let correo = email.trim();
     let pass = password.trim();
 
@@ -42,10 +42,22 @@ function Login() {
       return;
     }
 
-    toast.success("✔ Validación exitosa (sin backend).", {
+    try {
+    const res = await fetch("/Try-connection");  // ejemplo: tu endpoint en Nest
+    const data = await res.json();
+
+    toast.success(data.message || "Conexión exitosa", {
       position: "top-center",
     });
-    navigate("/map");
+
+    // Solo navega si la llamada fue exitosa
+    //navigate("/map");
+
+  } catch (error) {
+    toast.error("Error conectando con el servidor.", {
+      position: "top-center",
+    });
+  }
   };
 
   const resetCampos = () => {
