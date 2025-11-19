@@ -57,6 +57,8 @@ function CreateAccount() {
     }
 
     try {
+      setShowConfirm(true);
+
       const body = { name: nombre, email: correo, type: "register" };
       const res = await fetch("/user/send-verification-code", {
         method: "POST",
@@ -69,8 +71,6 @@ function CreateAccount() {
       if (!data.success) {
         throw new Error(data.message);
       }
-
-      setShowConfirm(true);
     } catch (error) {
       toast.error(error?.message || "Error enviando el código.", {
         theme: "colored",
