@@ -104,6 +104,9 @@
   cursor: pointer;
   font-weight: 700;
   min-width: 120px;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
 }
 
 .secondary {
