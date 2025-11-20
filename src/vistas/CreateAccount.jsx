@@ -33,6 +33,7 @@ function CreateAccount() {
 
     if (!nombre || !correo || !pass || !pass2) {
       toast.error("Todos los campos son obligatorios.", { theme: "colored" });
+      resetCampos();
       return;
     }
 
@@ -40,6 +41,7 @@ function CreateAccount() {
       toast.error("Los campos no deben contener espacios internos.", {
         theme: "colored",
       });
+      resetCampos();
       return;
     }
 
@@ -48,11 +50,20 @@ function CreateAccount() {
       toast.error("El email debe ser institucional @unal.edu.co.", {
         theme: "colored",
       });
+      resetCampos();
       return;
     }
 
     if (pass !== pass2) {
       toast.error("Las contraseñas no coinciden.", { theme: "colored" });
+      return;
+    }
+
+    const res = await fetch(`/user/exist-email/${correo}`);
+    const data = await res.json();
+    if(data.exist === true){
+      toast.error("El correo ya existe", { theme: "colored" });
+      resetCampos();
       return;
     }
 
@@ -75,6 +86,7 @@ function CreateAccount() {
       toast.error(error?.message || "Error enviando el código.", {
         theme: "colored",
       });
+      resetCampos();
     }
   };
 

@@ -14,7 +14,7 @@ function Login() {
   // 🔥 VALIDACIÓN LOCAL Y MANEJO DEL BOTÓN LOGIN
   // ==================================================
   const handleLoginClick = async () => {
-    let correo = email.trim();
+    let correo = email.trim().toLowerCase();
     let pass = password.trim();
 
     if (!correo || !pass) {
@@ -43,21 +43,35 @@ function Login() {
     }
 
     try {
-    const res = await fetch("/Try-connection");  // ejemplo: tu endpoint en Nest
-    const data = await res.json();
-
-    toast.success(data.message || "Conexión exitosa", {
-      position: "top-center",
-    });
-
-    // Solo navega si la llamada fue exitosa
-    //navigate("/map");
-
-  } catch (error) {
-    toast.error("Error conectando con el servidor.", {
-      position: "top-center",
-    });
-  }
+      const body = {email:correo, password: pass};
+      const res = await fetch("user/login", {
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        toast.error("Error del servidor. Intenta de nuevo.", {
+          position: "top-center",
+        });
+        return;
+      }
+      const data = await res.json();
+      if(data.success){
+        toast.success(data.message || "Conexión exitosa", {
+          position: "top-center",
+        });
+        console.log(data.session);
+        navigate("/map");
+      }else{
+        toast.error(data.message, {
+        position: "top-center",
+        });
+      }
+    } catch (error) {
+      toast.error("Error conectando con el servidor.", {
+        position: "top-center",
+      });
+    }
   };
 
   const resetCampos = () => {
