@@ -43,9 +43,9 @@ function Login() {
     }
 
     try {
-      const body = {email:correo, password: pass};
+      const body = { email: correo, password: pass };
       const res = await fetch("user/login", {
-        method: 'POST',
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
@@ -56,15 +56,15 @@ function Login() {
         return;
       }
       const data = await res.json();
-      if(data.success){
+      if (data.success) {
         toast.success(data.message || "Conexión exitosa", {
           position: "top-center",
         });
         console.log(data.session);
         navigate("/map");
-      }else{
+      } else {
         toast.error(data.message, {
-        position: "top-center",
+          position: "top-center",
         });
       }
     } catch (error) {
@@ -84,6 +84,13 @@ function Login() {
   // ==================================================
   const handleCreateAccountClick = () => {
     navigate("/createAccount");
+  };
+
+  // ==================================================
+  // 🔥 MANEJO BOTÓN FORGOT PASSWORD
+  // ==================================================
+  const handleForgotPasswordClick = () => {
+    navigate("/forgotPassword");
   };
 
   return (
@@ -127,9 +134,17 @@ function Login() {
         >
           Create Account
         </button>
+
+        {/* 🟦 NUEVO BOTÓN FORGOT PASSWORD */}
+        <button
+          className="text-link"
+          type="button"
+          onClick={handleForgotPasswordClick}
+        >
+          Forgot Password?
+        </button>
       </div>
 
-      {/* Contenedor global de Toastify */}
       <ToastContainer />
     </div>
   );

@@ -15,7 +15,7 @@ function ConfirmCode({ email, type, onClose, onSuccess }) {
       const body = {
         email: email.toLowerCase(),
         code: code.trim(),
-        type
+        type: type,
       };
 
       const res = await fetch("/user/verify-code", {
