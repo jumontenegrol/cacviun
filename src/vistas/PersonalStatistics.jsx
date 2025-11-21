@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import "./../styles/Statistics.css";
+import { ToastContainer, toast } from "react-toastify";
+import DeleteConfirm from "../components/DeleteReport";
+import EditReport from "../components/EditReport";
 
 function PersonalStatistics() {
   // Lista local vacía que luego será reemplazada por datos del backend
@@ -16,6 +19,40 @@ function PersonalStatistics() {
        zona: "test",
      }
   ]);
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const [selectedReport, setSelectedReport] = useState(null);
+
+  // DELETE — abre modal
+  const handleDeleteClick = (rep) => {
+    setSelectedReport(rep);
+    setShowDeleteModal(true);
+  };
+
+  //DELETE — ejecuta confirmación
+  const confirmDelete = () => {
+    setIncidentes((prev) => prev.filter((x) => x.id !== selectedReport.id));
+    toast.success("Report deleted successfully!", { theme: "colored" });
+    setShowDeleteModal(false);
+  };
+
+  // EDIT — abre modal
+  const handleEditClick = (rep) => {
+    setSelectedReport(rep);
+    setShowEditModal(true);
+  };
+
+  // EDIT — guardar cambios
+  const saveEditedReport = (editedData) => {
+    setIncidentes((prev) =>
+      prev.map((r) => (r.id === editedData.id ? editedData : r))
+    );
+
+    toast.success("Report updated successfully!", { theme: "colored" });
+    setShowEditModal(false);
+  };
 
   return (
     <div className="Statistics-container">
@@ -62,6 +99,22 @@ function PersonalStatistics() {
                     <td>{inc.tipo_de_violencia}</td>
                     <td>{inc.descripcion}</td>
                     <td>{inc.zona}</td>
+
+                    <td>
+                      <button
+                        className="btn-edit"
+                        onClick={() => handleEditClick(inc)}
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className="btn-delete"
+                        onClick={() => handleDeleteClick(inc)}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -69,7 +122,7 @@ function PersonalStatistics() {
           </div>
         ) : (
           <p style={{ textAlign: "center", fontSize: "0.8rem" }}>
-            No hay datos disponibles.
+            No data available.
           </p>
         )}
 
@@ -77,10 +130,28 @@ function PersonalStatistics() {
           className="form-subtitle"
           style={{ textAlign: "center", fontSize: "0.6rem" }}
         >
-          This color symbolizes our dedication to eliminating all forms of
+          🟣 This color symbolizes our dedication to eliminating all forms of
           violence.
         </p>
       </div>
+
+      <ToastContainer />
+
+      {showDeleteModal && (
+        <DeleteConfirm
+          report={selectedReport}
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={confirmDelete}
+        />
+      )}
+
+      {showEditModal && (
+        <EditReport
+          report={selectedReport}
+          onClose={() => setShowEditModal(false)}
+          onSave={saveEditedReport}
+        />
+      )}
     </div>
   );
 }

@@ -153,19 +153,18 @@
   }
 
   button.text-link {
-  all: unset;               /* quita todos los estilos por defecto */
+  all: unset;               
   display: inline-block;
   cursor: pointer;
-  color: #ffffff;           /* color del texto (ajusta si quieres) */
+  color: #ffffff;          
   text-decoration: underline;
   font-size: 0.95rem;
   line-height: 1;
-  padding: 0;               /* sin padding */
-  margin: 0.4rem 0;         /* separación vertical opcional */
+  padding: 0;               
+  margin: 0.4rem 0;         
   text-align: left;
   }
 
-  /* hover / focus accesible */
   button.text-link:hover,
   button.text-link:focus {
     opacity: 0.9;
@@ -173,10 +172,54 @@
     outline: none;
   }
 
-  /* si quieres que esté alineado a la derecha en el contenedor */
   .text-link-right {
     display: inline-block;
     margin-left: auto;
   }
 }
 
+.btn-primary {
+  background-color: #4b1959;
+  color: white;
+  border: none;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  width: 100%;
+  margin-top: 0.8rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  width: 100%;
+  margin-top: 0.6rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #ffffff;
+  text-decoration: underline;
+  font-size: 0.95rem;
+  margin-top: 0.8rem;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+}
+
+.btn-link:hover {
+  opacity: 0.9;
+  text-decoration: none;
+}

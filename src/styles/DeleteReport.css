@@ -1,0 +1,47 @@
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.confirm-box, .edit-box {
+  background: rgba(128, 0, 128, 0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 350px;
+  max-width: 90%;
+  text-align: center;
+}
+
+.confirm-box h2, .edit-box h2 {
+  margin-bottom: 1rem;
+}
+
+.confirm-box button, .edit-box button {
+  margin-top: 1rem;
+}
+
+.danger-btn {
+  background: #d9534f;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.confirm-cancel {
+  background: #ccc;
+  color: black;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}

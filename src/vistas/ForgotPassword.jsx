@@ -20,22 +20,19 @@ function ForgotPassword() {
     setConfirmPassword("");
   };
 
-  // ============================================
-  // 🔥 VALIDACIÓN Y ENVÍO DEL CÓDIGO
-  // ============================================
   const handleSubmitRegister = async () => {
     let correo = email.trim().toLowerCase();
     let pass = password.trim();
     let pass2 = confirmPassword.trim();
 
     if (!correo || !pass || !pass2) {
-      toast.error("Todos los campos son obligatorios.", { theme: "colored" });
+      toast.error("All fields are required.", { theme: "colored" });
       resetCampos();
       return;
     }
 
     if (correo.includes(" ") || pass.includes(" ") || pass2.includes(" ")) {
-      toast.error("Los campos no deben contener espacios internos.", {
+      toast.error("The fields must not contain internal spaces.", {
         theme: "colored",
       });
       resetCampos();
@@ -44,7 +41,7 @@ function ForgotPassword() {
 
     const regex = /^[^\s@]+@unal\.edu\.co$/;
     if (!regex.test(correo)) {
-      toast.error("El email debe ser institucional @unal.edu.co.", {
+      toast.error("The email address must be institutional @unal.edu.co.", {
         theme: "colored",
       });
       resetCampos();
@@ -52,7 +49,7 @@ function ForgotPassword() {
     }
 
     if (pass !== pass2) {
-      toast.error("Las contraseñas no coinciden.", { theme: "colored" });
+      toast.error("The passwords do not match.", { theme: "colored" });
       return;
     }
 
@@ -60,7 +57,7 @@ function ForgotPassword() {
     const res = await fetch(`/user/exist-email/${correo}`);
     const data = await res.json();
     if (data.exist === false) {
-      toast.error("El correo no existe en el sistema", { theme: "colored" });
+      toast.error("The email address does not exist in the system.", { theme: "colored" });
       resetCampos();
       return;
     }
@@ -81,7 +78,7 @@ function ForgotPassword() {
         throw new Error(data.message);
       }
     } catch (error) {
-      toast.error(error?.message || "Error enviando el código.", {
+      toast.error(error?.message || "Error sending code.", {
         theme: "colored",
       });
       resetCampos();
@@ -113,7 +110,7 @@ function ForgotPassword() {
 
       navigate("/");
     } catch (error) {
-      toast.error(error?.message || "Error actualizando la contraseña.", {
+      toast.error(error?.message || "Error updating password.", {
         theme: "colored",
       });
     }

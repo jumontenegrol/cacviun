@@ -1,0 +1,112 @@
+.edit-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.edit-box {
+  background: rgba(128, 0, 128, 0.9);
+  width: 420px;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.35);
+  animation: fadeIn 0.25s ease-out;
+  color: #4b1959;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.edit-box h2 {
+  margin-top: 0;
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+/* Form layout */
+.edit-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.edit-box label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* Inputs */
+.edit-box input,
+.edit-box textarea,
+.edit-box select {
+  width: 100%;
+  padding: 0.55rem;
+  border: 1px solid #b88fc7;
+  border-radius: 6px;
+  background: #faf6fb;
+  font-size: 0.9rem;
+}
+
+.edit-box textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Buttons container */
+.edit-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+/* Confirm button */
+.save-btn {
+  flex: 1;
+  background: #5d2a72;
+  color: white;
+  border: none;
+  padding: 0.65rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.save-btn:hover {
+  background: #4b1959;
+}
+
+/* Cancel button */
+.cancel-btn {
+  flex: 1;
+  background: #c6b6c6;
+  color: #4b1959;
+  border: none;
+  padding: 0.65rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #b8a4b8;
+}
+
+.error {
+  color: #fff;
+  font-size: 0.85rem;
+  margin-left: 2px;
+  text-shadow: 0 0 3px #000;
+}
+

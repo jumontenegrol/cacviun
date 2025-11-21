@@ -10,15 +10,12 @@ function Login() {
 
   const navigate = useNavigate();
 
-  // ==================================================
-  // 🔥 VALIDACIÓN LOCAL Y MANEJO DEL BOTÓN LOGIN
-  // ==================================================
   const handleLoginClick = async () => {
     let correo = email.trim().toLowerCase();
     let pass = password.trim();
 
     if (!correo || !pass) {
-      toast.error("Todos los campos son obligatorios.", {
+      toast.error("All fields are required.", {
         position: "top-center",
       });
       resetCampos();
@@ -26,7 +23,7 @@ function Login() {
     }
 
     if (correo.includes(" ") || pass.includes(" ")) {
-      toast.error("Los campos no deben contener espacios internos.", {
+      toast.error("The fields must not contain internal spaces.", {
         position: "top-center",
       });
       resetCampos();
@@ -35,7 +32,7 @@ function Login() {
 
     const regex = /^[^\s@]+@unal\.edu\.co$/;
     if (!regex.test(correo)) {
-      toast.error("El correo debe ser institucional @unal.edu.co.", {
+      toast.error("The email address must be institutional @unal.edu.co.", {
         position: "top-center",
       });
       resetCampos();
@@ -50,14 +47,14 @@ function Login() {
         body: JSON.stringify(body),
       });
       if (!res.ok) {
-        toast.error("Error del servidor. Intenta de nuevo.", {
+        toast.error("Server error. Please try again.", {
           position: "top-center",
         });
         return;
       }
       const data = await res.json();
       if (data.success) {
-        toast.success(data.message || "Conexión exitosa", {
+        toast.success(data.message || "Successful connection", {
           position: "top-center",
         });
         console.log(data.session);
@@ -68,7 +65,7 @@ function Login() {
         });
       }
     } catch (error) {
-      toast.error("Error conectando con el servidor.", {
+      toast.error("Error connecting to the server.", {
         position: "top-center",
       });
     }
@@ -79,16 +76,11 @@ function Login() {
     setPassword("");
   };
 
-  // ==================================================
-  // 🔥 MANEJO BOTÓN CREATE ACCOUNT
-  // ==================================================
+
   const handleCreateAccountClick = () => {
     navigate("/createAccount");
   };
 
-  // ==================================================
-  // 🔥 MANEJO BOTÓN FORGOT PASSWORD
-  // ==================================================
   const handleForgotPasswordClick = () => {
     navigate("/forgotPassword");
   };
@@ -120,12 +112,13 @@ function Login() {
             required
           />
 
-          <button type="button" onClick={handleLoginClick}>
+          {/*<button type="button" className="btn-primary" onClick={handleLoginClick}>*/}
+          <button type="button" className="text-link" onClick={handleLoginClick}>
             Login
           </button>
         </form>
 
-        <div className="separator">Or</div>
+        <div className="separator"></div>
 
         <button
           className="text-link"
@@ -134,8 +127,8 @@ function Login() {
         >
           Create Account
         </button>
+        <div className="separator"></div>
 
-        {/* 🟦 NUEVO BOTÓN FORGOT PASSWORD */}
         <button
           className="text-link"
           type="button"

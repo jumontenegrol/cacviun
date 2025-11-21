@@ -86,3 +86,44 @@ body {
   transition: 0.2s;
   cursor: pointer;
 }
+
+.btn-edit {
+  background-color: #6a1b9a; 
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-right: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-edit:hover {
+  background-color: #7b2bb0;
+  transform: scale(1.05);
+}
+
+.btn-edit:active {
+  transform: scale(0.95);
+}
+
+.btn-delete {
+  background-color: #d9534f;   
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.btn-delete:hover {
+  background-color: #c9302c;
+  transform: scale(1.05);
+}
+
+.btn-delete:active {
+  transform: scale(0.95);
+}
