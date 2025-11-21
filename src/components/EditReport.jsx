@@ -20,12 +20,12 @@ function EditReport({ report, onClose, onSave }) {
   const validate = () => {
     const newErrors = {};
 
-    if (!formData.edad || Number(formData.edad) <= 0) {
-      newErrors.edad = "Age must be a number greater than zero.";
+    if (!formData.age || Number(formData.age) <= 0) {
+      newErrors.age = "Age must be a number greater than zero.";
     }
 
-    if (!violenceTypes.includes(formData.tipo_de_violencia)) {
-      newErrors.tipo_de_violencia = "Select a valid type of violence.";
+    if (!violenceTypes.includes(formData.category)) {
+      newErrors.category = "Select a valid type of violence.";
     }
 
     setErrors(newErrors);
@@ -42,6 +42,7 @@ function EditReport({ report, onClose, onSave }) {
     <div className="edit-overlay">
       <div className="edit-box" role="dialog">
         <h2>Edit Report</h2>
+        <h4>You are only allowed to change the type of violence and the description.</h4>
 
         <form>
           
@@ -59,7 +60,7 @@ function EditReport({ report, onClose, onSave }) {
             onChange={handleChange}
             type="number"
           />
-          {errors.edad && <p className="error">{errors.edad}</p>}
+          {errors.age && <p className="error">{errors.age}</p>}
 
           <label>Date</label>
           <input
@@ -71,7 +72,7 @@ function EditReport({ report, onClose, onSave }) {
 
           <label>Type</label>
           <select
-            name="tipo_de_violencia"
+            name="category"
             value={formData.category}
             onChange={handleChange}
           >
@@ -82,23 +83,18 @@ function EditReport({ report, onClose, onSave }) {
               </option>
             ))}
           </select>
-          {errors.tipo_de_violencia && (
-            <p className="error">{errors.tipo_de_violencia}</p>
+          {errors.category && (
+            <p className="error">{errors.category}</p>
           )}
 
           <label>Description</label>
           <textarea
-            name="descripcion"
+            name="description"
             value={formData.description}
             onChange={handleChange}
           />
 
-          <label>Zone</label>
-          <input
-            name="zona"
-            value={formData.zone}
-            onChange={handleChange}
-          />
+        
         </form>
 
         <div className="edit-buttons">

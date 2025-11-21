@@ -30,6 +30,13 @@
   margin-bottom: 1.5rem;
   color: #ffffff;
 }
+.edit-box h4 {
+  margin-top: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
 
 /* Form layout */
 .edit-box form {
