@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { useSessionStore } from "./../session/sessionStore.ts";
 import "react-toastify/dist/ReactToastify.css";
 import "./../styles/App.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const setSession = useSessionStore((state) => state.setSession);
 
   const navigate = useNavigate();
 
@@ -58,6 +60,7 @@ function Login() {
           position: "top-center",
         });
         console.log(data.session);
+        setSession(data.session);
         navigate("/map");
       } else {
         toast.error(data.message, {
@@ -75,7 +78,6 @@ function Login() {
     setEmail("");
     setPassword("");
   };
-
 
   const handleCreateAccountClick = () => {
     navigate("/createAccount");
