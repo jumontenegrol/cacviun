@@ -6,15 +6,15 @@ function PersonalStatistics() {
   // Lista local vacía que luego será reemplazada por datos del backend
   const [incidentes, setIncidentes] = useState([
     // Ejemplo de estructura (no se llena):
-     {
-       nombre: "Juan",
-       correo: "Jumo",
-       edad: "12",
-       fecha: "125",
-       tipo_de_violencia: "yo",
-       descripcion: "y",
-       zona: "test",
-     }
+    // {
+      // nombre: "Juan",
+       //correo: "Jumo",
+       //edad: "12",
+       //fecha: "125",
+       //tipo_de_violencia: "yo",
+       //descripcion: "y",
+       //zona: "test",
+     //}
   ]);
 
   return (
@@ -26,7 +26,7 @@ function PersonalStatistics() {
           className="Statistics-form-title"
           style={{ textAlign: "center", padding: "0.1rem" }}
         >
-          STATISTICS
+          ADMIN STATISTICS
         </h1>
 
         <p

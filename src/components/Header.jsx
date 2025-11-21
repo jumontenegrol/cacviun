@@ -15,6 +15,10 @@ const Header = () => {
           <button className="header-btn">See your statistics</button>
         </Link>
 
+        <Link to="/adminStatistics">
+          <button className="header-btn">Admin Statistics</button>
+        </Link>
+
         <Link to="/report">
           <button className="header-btn">Make a report</button>
         </Link>
