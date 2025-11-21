@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { useSessionStore } from "..store/sessionStore";
+import { useSessionStore } from "./../session/sessionStore.ts";
 import "react-toastify/dist/ReactToastify.css";
 import "./../styles/App.css";
 
