@@ -44,24 +44,18 @@ function EditReport({ report, onClose, onSave }) {
         <h2>Edit Report</h2>
 
         <form>
-          <label>Name</label>
-          <input
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleChange}
-          />
-
+          
           <label>Email</label>
           <input
             name="correo"
-            value={formData.correo}
+            value={formData.user_email}
             onChange={handleChange}
           />
 
           <label>Age</label>
           <input
             name="edad"
-            value={formData.edad}
+            value={formData.age}
             onChange={handleChange}
             type="number"
           />
@@ -71,14 +65,14 @@ function EditReport({ report, onClose, onSave }) {
           <input
             type="date"
             name="fecha"
-            value={formData.fecha}
+            value={formData.date}
             onChange={handleChange}
           />
 
           <label>Type</label>
           <select
             name="tipo_de_violencia"
-            value={formData.tipo_de_violencia}
+            value={formData.category}
             onChange={handleChange}
           >
             <option value="">Select...</option>
@@ -95,14 +89,14 @@ function EditReport({ report, onClose, onSave }) {
           <label>Description</label>
           <textarea
             name="descripcion"
-            value={formData.descripcion}
+            value={formData.description}
             onChange={handleChange}
           />
 
           <label>Zone</label>
           <input
             name="zona"
-            value={formData.zona}
+            value={formData.zone}
             onChange={handleChange}
           />
         </form>
