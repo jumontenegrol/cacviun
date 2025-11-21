@@ -4,9 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "./../styles/Report.css";
 import Header from "../components/Header";
 
-// ==================================================
-// 🔽 LISTA DE OPCIONES PARA "TYPE OF VIOLENCE"
-// ==================================================
 const violenceTypes = [
   "Physical Violence",
   "Psychological Violence",

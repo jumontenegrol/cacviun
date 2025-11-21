@@ -1,24 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import "./../styles/Statistics.css";
 import { ToastContainer, toast } from "react-toastify";
 import DeleteConfirm from "../components/DeleteReport";
 import EditReport from "../components/EditReport";
+import { useSessionStore } from "./../session/sessionStore.ts";
 
 function PersonalStatistics() {
-  // Lista local vacía que luego será reemplazada por datos del backend
-  const [incidentes, setIncidentes] = useState([
-    // Ejemplo de estructura (no se llena):
-     {
-       nombre: "Juan",
-       correo: "Jumo",
-       edad: "12",
-       fecha: "125",
-       tipo_de_violencia: "yo",
-       descripcion: "y",
-       zona: "test",
-     }
-  ]);
+
+  const session = useSessionStore((state) => state.session);
+  
+  const [incidentes, setIncidentes] = useState([ ]);
+  
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch(`/report/history/${session.email}`);
+
+        if (!res.ok) {
+          console.error("Error al consultar historial");
+          return;
+        }
+
+        const data = await res.json();
+
+        setIncidentes(data.reportHistory || []);
+
+      } catch (error) {
+        console.error("Error al conectar con el servidor", error);
+      }
+    };
+
+    fetchHistory();
+  }, []);
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -79,27 +93,24 @@ function PersonalStatistics() {
             <table className="tabla-incidentes">
               <thead>
                 <tr>
-                  <th>Nombre</th>
-                  <th>Correo</th>
-                  <th>Edad</th>
-                  <th>Fecha</th>
-                  <th>Tipo de violencia</th>
-                  <th>Descripción</th>
-                  <th>Zona</th>
+                  <th>Email</th>
+                  <th>Age</th>
+                  <th>Description</th>
+                  <th>Date</th>
+                  <th>Category</th>
+                  <th>Zone</th>
                 </tr>
               </thead>
 
               <tbody>
                 {incidentes.map((inc, index) => (
                   <tr key={index}>
-                    <td>{inc.nombre}</td>
-                    <td>{inc.correo}</td>
-                    <td>{inc.edad}</td>
-                    <td>{inc.fecha}</td>
-                    <td>{inc.tipo_de_violencia}</td>
-                    <td>{inc.descripcion}</td>
-                    <td>{inc.zona}</td>
-
+                    <td>{inc.user_email}</td>
+                    <td>{inc.age}</td>
+                    <td>{inc.description}</td>
+                    <td>{inc.date}</td>
+                    <td>{inc.category}</td>
+                    <td>{inc.zone}</td>
                     <td>
                       <button
                         className="btn-edit"
