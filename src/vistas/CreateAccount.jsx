@@ -56,14 +56,20 @@ function CreateAccount() {
       return;
     }
 
-    const res = await fetch(`/user/exist-email/${correo}`);
-    const data = await res.json();
-    if(data.exist === true){
-      toast.error("Email already exists.", { theme: "colored" });
-      resetCampos();
-      return;
+    try{
+      const res = await fetch(`/user/exist-email/${correo}`);
+      const data = await res.json();
+      if(data.exist === true){
+        toast.error("Email already exists.", { theme: "colored" });
+        resetCampos();
+        return;
+      }
+    } catch(error){
+      toast.error("Error connecting to the server.", {
+        position: "top-center",
+      });
     }
-
+    
     try {
       setShowConfirm(true);
 

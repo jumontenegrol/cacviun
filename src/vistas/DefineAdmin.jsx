@@ -7,8 +7,9 @@ import Header from "../components/Header";
 function Report() {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    let correo = email;
 
     if (!email.trim()) {
       toast.error("Email field required", { position: "top-center" });
@@ -22,10 +23,54 @@ function Report() {
       return;
     }
 
-    toast.success("administrator successfully assigned", {
-      position: "top-center",
-      autoClose: 2000,
-    });
+    try{
+      const res = await fetch(`/user/exist-email/${email}`);
+      const data = await res.json();
+      if (data.exist === false) {
+        toast.error("The email address does not exist in the system.", { theme: "colored" });
+        setEmail("");
+        return;
+      }
+    } catch(error){
+      toast.error("Error connecting to the server.", {
+        position: "top-center",
+      });
+    }
+
+    try{
+      const body = {email: correo};
+      const res = await fetch('/user/define-admin',{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        toast.error("Server error. Please try again.", {
+          position: "top-center",
+        });
+        return;
+      }
+
+      const data = await res.json();
+      if(data.success){
+        toast.success("Administrator successfully assigned", {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }else{
+        toast.error(data.message, {
+          position: "top-center",
+        });
+      }
+    } catch (error){
+      console.log(error);
+      toast.error("Error connecting to the server.", {
+        position: "top-center",
+      });
+    }
+
+    
 
     setEmail("");
   };

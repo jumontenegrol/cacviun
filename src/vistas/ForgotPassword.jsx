@@ -54,12 +54,18 @@ function ForgotPassword() {
     }
 
     // Para forgotPassword: el correo DEBE existir
-    const res = await fetch(`/user/exist-email/${correo}`);
-    const data = await res.json();
-    if (data.exist === false) {
-      toast.error("The email address does not exist in the system.", { theme: "colored" });
-      resetCampos();
-      return;
+    try{
+      const res = await fetch(`/user/exist-email/${email}`);
+      const data = await res.json();
+      if (data.exist === false) {
+        toast.error("The email address does not exist in the system.", { theme: "colored" });
+        resetCampos();
+        return;
+      }
+    } catch(error){
+      toast.error("Error connecting to the server.", {
+        position: "top-center",
+      });
     }
 
     try {
