@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import { useSessionStore } from "..store/sessionStore";
 import "react-toastify/dist/ReactToastify.css";
 import "./../styles/App.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const setSession = useSessionStore((state) => state.setSession);
 
   const navigate = useNavigate();
 
@@ -61,6 +63,7 @@ function Login() {
           position: "top-center",
         });
         console.log(data.session);
+        setSession(data.session);
         navigate("/map");
       } else {
         toast.error(data.message, {
@@ -79,16 +82,10 @@ function Login() {
     setPassword("");
   };
 
-  // ==================================================
-  // 🔥 MANEJO BOTÓN CREATE ACCOUNT
-  // ==================================================
   const handleCreateAccountClick = () => {
     navigate("/createAccount");
   };
 
-  // ==================================================
-  // 🔥 MANEJO BOTÓN FORGOT PASSWORD
-  // ==================================================
   const handleForgotPasswordClick = () => {
     navigate("/forgotPassword");
   };
