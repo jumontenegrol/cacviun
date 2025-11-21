@@ -23,6 +23,10 @@ const Header = () => {
           <button className="header-btn">See the map</button>
         </Link>
 
+        <Link to="/defineAdmin">
+          <button className="header-btn">Define New Admin</button>
+        </Link>
+
         <button className="header-btn" onClick={handleSignOut}>
           Sign Out
         </button>

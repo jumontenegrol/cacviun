@@ -6,6 +6,7 @@ import Map from "./vistas/Map.jsx";
 import Report from "./vistas/Report.jsx";
 import PersonalStatistics from "./vistas/PersonalStatistics.jsx";
 import ForgotPassword from "./vistas/ForgotPassword.jsx";
+import DefineAdmin from "./vistas/DefineAdmin.jsx";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/report" element={<Report />} />
         <Route path="/personalStatistics" element={<PersonalStatistics />} />
 
+        <Route path="/defineAdmin" element={<DefineAdmin />} />
       </Routes>
     </BrowserRouter>
   );

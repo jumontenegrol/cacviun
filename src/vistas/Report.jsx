@@ -6,16 +6,13 @@ import Header from "../components/Header";
 
 // ==================================================
 // 🔽 LISTA DE OPCIONES PARA "TYPE OF VIOLENCE"
-//     Puedes editar esta lista libremente
 // ==================================================
 const violenceTypes = [
   "Physical Violence",
   "Psychological Violence",
   "Sexual Violence",
   "Workplace Violence",
-  "Economic Violence",
   "Discrimination",
-  "Harassment",
 ];
 
 function Report() {
@@ -26,9 +23,9 @@ function Report() {
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
 
-  // ==================================================
-  // 🔥 VALIDACIONES DEL FORMULARIO
-  // ==================================================
+  // Estado para mostrar u ocultar la ventana emergente
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -49,10 +46,7 @@ function Report() {
       return;
     }
 
-    // ==================================================
-    // 🔥 VALIDACIÓN DE FECHA
-    // Debe ser: después del 2000 y antes de hoy
-    // ==================================================
+    // Validación de fecha
     const selectedDate = new Date(date);
     const minDate = new Date("2000-01-01");
     const today = new Date();
@@ -67,7 +61,13 @@ function Report() {
       return;
     }
 
-    toast.success("Report sent successfully (local validation only)", {
+    // 👉 Mostrar ventana emergente de confirmación
+    setShowConfirm(true);
+  };
+
+
+  const confirmSubmit = () => {
+    toast.success("Report submitted successfully", {
       position: "top-center",
       autoClose: 2000,
     });
@@ -79,11 +79,32 @@ function Report() {
     setDate("");
     setType("");
     setDescription("");
+
+    setShowConfirm(false);
   };
+
+  const confirmationModal = (
+    <div className="modal-background">
+      <div className="modal-box">
+        <h3>Confirmation Required</h3>
+        <p>
+          Are you completely sure that all the information entered is correct
+          and you want to submit this report?
+        </p>
+
+        <div className="modal-buttons">
+          <button className="yes-btn" onClick={confirmSubmit}>YES</button>
+          <button className="no-btn" onClick={() => setShowConfirm(false)}>NO</button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="report-container">
       <Header />
+
+      {showConfirm && confirmationModal}
 
       <div className="report-content">
         <div className="form-header-text">
@@ -145,13 +166,11 @@ function Report() {
             >
               <option value="">Select</option>
 
-              {/* 🔽 Generación dinámica de opciones */}
               {violenceTypes.map((t, index) => (
                 <option key={index} value={t}>
                   {t}
                 </option>
               ))}
-
             </select>
           </div>
 
@@ -165,9 +184,6 @@ function Report() {
             ></textarea>
           </div>
 
-          {/* ================================================== */}
-          {/*      🔥 FRAME QUE REEMPLAZA EL MAPA ORIGINAL       */}
-          {/* ================================================== */}
           <div className="form-group">
             <label>SELECT THE AREA WHERE THE EVENT OCCURRED</label>
             <div
