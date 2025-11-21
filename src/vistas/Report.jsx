@@ -3,10 +3,8 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./../styles/Report.css";
 import Header from "../components/Header";
+import { useSessionStore } from "./../session/sessionStore.ts";
 
-// ==================================================
-// 🔽 LISTA DE OPCIONES PARA "TYPE OF VIOLENCE"
-// ==================================================
 const violenceTypes = [
   "Physical Violence",
   "Psychological Violence",
@@ -16,12 +14,15 @@ const violenceTypes = [
 ];
 
 function Report() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const session = useSessionStore((state) => state.session);
+
+  const name = session?.name || "";
+  const email = session?.email || "";
   const [age, setAge] = useState("");
   const [date, setDate] = useState("");
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
+  
 
   // Estado para mostrar u ocultar la ventana emergente
   const [showConfirm, setShowConfirm] = useState(false);
@@ -66,22 +67,67 @@ function Report() {
   };
 
 
-  const confirmSubmit = () => {
+  const confirmSubmit = async() => {
+    
+    try{
+      const body = {
+        email: email,
+        date: date,
+        age: age,
+        type: type,
+        description: description,
+        location: {latitud: "321312", longitud: "32131232"},
+        sendTime: new Date().toLocaleString("sv-SE"),
+      };
+
+      const res = await fetch('/report/save-report',{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        toast.error("Server error. Please try again.", {
+          position: "top-center",
+        });
+        return;
+      }
+
+      const data = res.json();
+      if(data.success){
+        toast.success(data.message, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+      }else{
+        toast.error(data.message, {
+          position: "top-center",
+        });
+      }
+    }catch(error){
+      console.log(error);
+      toast.error("Error connecting to the server.", {
+        position: "top-center",
+      });
+      resetForm();
+    } 
     toast.success("Report submitted successfully", {
       position: "top-center",
       autoClose: 2000,
     });
 
     // Reset form
-    setName("");
-    setEmail("");
+    resetForm();
+
+    setShowConfirm(false);
+  };
+
+  const resetForm= () =>{
     setAge("");
     setDate("");
     setType("");
     setDescription("");
-
-    setShowConfirm(false);
-  };
+  }
 
   const confirmationModal = (
     <div className="modal-background">
@@ -119,9 +165,9 @@ function Report() {
             <input
               type="text"
               id="name"
-              placeholder="Enter your full name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              readOnly
+              className="input-disabled"
             />
           </div>
 
@@ -130,9 +176,9 @@ function Report() {
             <input
               type="email"
               id="email"
-              placeholder="Enter your @unal.edu.co email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              readOnly
+              className="input-disabled"
             />
           </div>
 
