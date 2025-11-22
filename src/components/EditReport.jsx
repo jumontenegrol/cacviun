@@ -2,7 +2,19 @@ import React, { useState } from "react";
 import "./../styles/EditReport.css";
 
 function EditReport({ report, onClose, onSave }) {
-  const [formData, setFormData] = useState(report);
+  // -----------------------------
+  // Crear copia editable del reporte
+  // -----------------------------
+  const [formData, setFormData] = useState({
+    _id: report._id,
+    user_email: report.user_email,
+    age: report.age,
+    date: report.date,
+    category: report.category,
+    description: report.description,
+    zone: report.zone,
+  });
+
   const [errors, setErrors] = useState({});
 
   const violenceTypes = [
@@ -13,10 +25,16 @@ function EditReport({ report, onClose, onSave }) {
     "Discrimination",
   ];
 
+  // -----------------------------
+  // Manejar cambios solo en los campos permitidos
+  // -----------------------------
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // -----------------------------
+  // Validación (solo categorías + descripción + age)
+  // -----------------------------
   const validate = () => {
     const newErrors = {};
 
@@ -28,11 +46,17 @@ function EditReport({ report, onClose, onSave }) {
       newErrors.category = "Select a valid type of violence.";
     }
 
-    setErrors(newErrors);
+    if (!formData.description || formData.description.trim().length < 10) {
+      newErrors.description = "Description must be at least 10 characters.";
+    }
 
-    return Object.keys(newErrors).length === 0; 
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
+  // -----------------------------
+  // Guardar cambios
+  // -----------------------------
   const handleSubmit = () => {
     if (!validate()) return;
     onSave(formData);
@@ -42,34 +66,40 @@ function EditReport({ report, onClose, onSave }) {
     <div className="edit-overlay">
       <div className="edit-box" role="dialog">
         <h2>Edit Report</h2>
-        <h4>You are only allowed to change the type of violence and the description.</h4>
+        <h4 style={{ marginBottom: "1rem" }}>
+          You are only allowed to change the type of violence and the description.
+        </h4>
 
         <form>
-          
+          {/* Email */}
           <label>Email</label>
           <input
-            name="correo"
+            name="user_email"
             value={formData.user_email}
-            onChange={handleChange}
+            disabled
           />
 
+          {/* Age */}
           <label>Age</label>
           <input
-            name="edad"
+            name="age"
             value={formData.age}
             onChange={handleChange}
             type="number"
+            disabled
           />
           {errors.age && <p className="error">{errors.age}</p>}
 
+          {/* Date */}
           <label>Date</label>
           <input
             type="date"
-            name="fecha"
+            name="date"
             value={formData.date}
-            onChange={handleChange}
+            disabled
           />
 
+          {/* Category */}
           <label>Type</label>
           <select
             name="category"
@@ -83,20 +113,27 @@ function EditReport({ report, onClose, onSave }) {
               </option>
             ))}
           </select>
-          {errors.category && (
-            <p className="error">{errors.category}</p>
-          )}
+          {errors.category && <p className="error">{errors.category}</p>}
 
+          {/* Description */}
           <label>Description</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
           />
+          {errors.description && <p className="error">{errors.description}</p>}
 
-        
+          {/* Zone */}
+          <label>Zone</label>
+          <input
+            name="zone"
+            value={formData.zone}
+            disabled
+          />
         </form>
 
+        {/* Botones */}
         <div className="edit-buttons">
           <button className="save-btn" onClick={handleSubmit}>
             Save changes

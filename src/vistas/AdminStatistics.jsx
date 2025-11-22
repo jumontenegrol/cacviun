@@ -5,16 +5,25 @@ import { ToastContainer, toast } from "react-toastify";
 import DeleteConfirm from "../components/DeleteReport";
 import EditReport from "../components/EditReport";
 
+function extractId(report) {
+  if (!report) return null;
+  if (report._id && typeof report._id === "string") return report._id;
+  if (report._id && report._id.$oid) return report._id.$oid;
+  if (report._id && report._id.toString) return report._id.toString();
+  if (report.id) return report.id;
+  return null;
+}
+
 function AdminStatistics() {
   const [incidentes, setIncidentes] = useState([ ]);
   
-  useEffect(() => {
+  
     const fetchHistory = async () => {
       try {
         const res = await fetch(`/report/admin-history`);
 
         if (!res.ok) {
-          console.error("Error al consultar historial");
+          console.error("Error when checking history");
           return;
         }
 
@@ -23,10 +32,10 @@ function AdminStatistics() {
         setIncidentes(data.reportHistory || []);
 
       } catch (error) {
-        console.error("Error al conectar con el servidor", error);
+        console.error("Error connecting to server", error);
       }
     };
-
+  useEffect(() => {
     fetchHistory();
   }, []);
 
@@ -42,9 +51,34 @@ function AdminStatistics() {
   };
 
   //DELETE — ejecuta confirmación
-  const confirmDelete = () => {
-    setIncidentes((prev) => prev.filter((x) => x.id !== selectedReport.id));
-    toast.success("Report deleted successfully!", { theme: "colored" });
+  const confirmDelete = async () => {
+    try {
+      const id = extractId(selectedReport);
+      if (!id) {
+        toast.error("Invalid report ID", { theme: "colored" });
+        return;
+      }
+
+      const res = await fetch(`/report/delete/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        toast.success("Report deleted successfully!", { theme: "colored" });
+        await fetchHistory(); // recargar lista real
+      } else {
+        toast.error(data.message || "Error deleting report", {
+          theme: "colored",
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Server error when deleting report", { theme: "colored" });
+    }
+
     setShowDeleteModal(false);
   };
 
@@ -55,12 +89,40 @@ function AdminStatistics() {
   };
 
   // EDIT — guardar cambios
-  const saveEditedReport = (editedData) => {
-    setIncidentes((prev) =>
-      prev.map((r) => (r.id === editedData.id ? editedData : r))
-    );
+  const saveEditedReport = async (editedData) => {
+    try {
+      const id = extractId(editedData);
+      if (!id) {
+        toast.error("Invalid report ID", { theme: "colored" });
+        return;
+      }
 
-    toast.success("Report updated successfully!", { theme: "colored" });
+      const body = {
+        category: editedData.category, // string legible
+        description: editedData.description,
+      };
+
+      const res = await fetch(`/report/edit/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        toast.success("Report updated successfully!", { theme: "colored" });
+        await fetchHistory(); // refrescar datos desde backend real
+      } else {
+        toast.error(data.message || "Error updating report", {
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Server error when updating report", { theme: "colored" });
+    }
+
     setShowEditModal(false);
   };
 
@@ -73,7 +135,7 @@ function AdminStatistics() {
           className="Statistics-form-title"
           style={{ textAlign: "center", padding: "0.1rem" }}
         >
-          STATISTICS
+          ADMIN STATISTICS
         </h1>
 
         <p
