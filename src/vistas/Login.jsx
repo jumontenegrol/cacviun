@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./../styles/App.css";
 
 function Login() {
+  const path = "https://cacviun-backen-onrender.com";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const setSession = useSessionStore((state) => state.setSession);
@@ -43,7 +44,7 @@ function Login() {
 
     try {
       const body = { email: correo, password: pass };
-      const res = await fetch("user/login", {
+      const res = await fetch(`${path}/user/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -93,7 +94,7 @@ function Login() {
 
       <div className="login-box">
         <h1>Login</h1>
-        <p>Sign in to continue</p>
+        <p>Sign in to continue. Cambio de proxy</p>
 
         <form onSubmit={(e) => e.preventDefault()}>
           <label>Email</label>

@@ -16,11 +16,12 @@ function extractId(report) {
 
 function AdminStatistics() {
   const [incidentes, setIncidentes] = useState([ ]);
+  const path = "https://cacviun-backen-onrender.com";
   
   
     const fetchHistory = async () => {
       try {
-        const res = await fetch(`/report/admin-history`);
+        const res = await fetch(`${path}/report/admin-history`);
 
         if (!res.ok) {
           console.error("Error when checking history");
