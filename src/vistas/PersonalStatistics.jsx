@@ -21,7 +21,6 @@ function PersonalStatistics() {
 
   const [incidentes, setIncidentes] = useState([]);
 
- 
   const fetchHistory = async () => {
     try {
       const res = await fetch(`/report/history/${session.email}`);
@@ -42,11 +41,11 @@ function PersonalStatistics() {
     fetchHistory();
   }, [session.email]);
 
+  
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedReport, setSelectedReport] = useState(null);
 
- 
   const handleDeleteClick = (rep) => {
     setSelectedReport(rep);
     setShowDeleteModal(true);
@@ -69,7 +68,7 @@ function PersonalStatistics() {
 
       if (res.ok && data.success) {
         toast.success("Report deleted successfully!", { theme: "colored" });
-        await fetchHistory(); // recargar lista real
+        await fetchHistory();
       } else {
         toast.error(data.message || "Error deleting report", {
           theme: "colored",
@@ -82,7 +81,6 @@ function PersonalStatistics() {
 
     setShowDeleteModal(false);
   };
-
 
   const handleEditClick = (rep) => {
     setSelectedReport(rep);
@@ -98,7 +96,7 @@ function PersonalStatistics() {
       }
 
       const body = {
-        category: editedData.category, // string legible
+        category: editedData.category,
         description: editedData.description,
       };
 
@@ -112,7 +110,7 @@ function PersonalStatistics() {
 
       if (res.ok && data.success) {
         toast.success("Report updated successfully!", { theme: "colored" });
-        await fetchHistory(); // refrescar datos desde backend real
+        await fetchHistory();
       } else {
         toast.error(data.message || "Error updating report", {
           theme: "colored",
@@ -126,27 +124,67 @@ function PersonalStatistics() {
     setShowEditModal(false);
   };
 
+  // ==========================================
+  // PAGINACIÓN + ITERATOR PATTERN
+  // ==========================================
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
 
+  function createIncidentIterator(collection) {
+    let index = 0;
+
+    return {
+      next: () => {
+        if (index < collection.length) {
+          return { value: collection[index++], done: false };
+        }
+        return { done: true };
+      },
+    };
+  }
+
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+
+  const currentIncidents = incidentes.slice(indexOfFirst, indexOfLast);
+
+  const iterator = createIncidentIterator(currentIncidents);
+
+  let visibleRows = [];
+  let step = iterator.next();
+  while (!step.done) {
+    visibleRows.push(step.value);
+    step = iterator.next();
+  }
+
+  const nextPage = () => {
+    if (currentPage < Math.ceil(incidentes.length / itemsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // ==========================================
+  // RENDER
+  // ==========================================
   return (
     <div className="Statistics-container">
       <Header view="statistics" />
 
       <div className="Statistics-content">
-        <h1
-          className="Statistics-form-title"
-          style={{ textAlign: "center", padding: "0.1rem" }}
-        >
+        <h1 className="Statistics-form-title" style={{ textAlign: "center" }}>
           STATISTICS
         </h1>
 
-        <p
-          className="Statistics-form-subtitle"
-          style={{ textAlign: "center", fontSize: "0.8rem", padding: "0.3rem" }}
-        >
+        <p style={{ textAlign: "center", fontSize: "0.8rem" }}>
           IN THIS SPACE YOU CAN SEE THE GENERAL STATISTICS
         </p>
 
-        {/* Tabla */}
         {incidentes.length > 0 ? (
           <div className="tabla-container">
             <table className="tabla-incidentes">
@@ -163,7 +201,7 @@ function PersonalStatistics() {
               </thead>
 
               <tbody>
-                {incidentes.map((inc, index) => (
+                {visibleRows.map((inc, index) => (
                   <tr key={index}>
                     <td>{inc.user_email}</td>
                     <td>{inc.age}</td>
@@ -190,6 +228,32 @@ function PersonalStatistics() {
                 ))}
               </tbody>
             </table>
+
+            {/* PAGINATION */}
+            <div className="pagination-controls">
+              <button
+                disabled={currentPage === 1}
+                onClick={prevPage}
+                className="pagination-btn"
+              >
+                ◀ Previous
+              </button>
+
+              <span className="pagination-info">
+                Page {currentPage} of{" "}
+                {Math.ceil(incidentes.length / itemsPerPage)}
+              </span>
+
+              <button
+                disabled={
+                  currentPage === Math.ceil(incidentes.length / itemsPerPage)
+                }
+                onClick={nextPage}
+                className="pagination-btn"
+              >
+                Next ▶
+              </button>
+            </div>
           </div>
         ) : (
           <p style={{ textAlign: "center", fontSize: "0.8rem" }}>

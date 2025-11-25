@@ -127,3 +127,31 @@ body {
 .btn-delete:active {
   transform: scale(0.95);
 }
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  gap: 20px;
+}
+
+.pagination-btn {
+  background-color: #6a0dad;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.pagination-btn:disabled {
+  background-color: #bfa4d6;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  font-size: 0.9rem;
+  color: #333;
+}
