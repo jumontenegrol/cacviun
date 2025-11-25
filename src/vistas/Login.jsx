@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./../styles/App.css";
 
 function Login() {
-  const path = "https://cacviun-backen-onrender.com";
+  const path = "https://cacviun-backend.onrender.com";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const setSession = useSessionStore((state) => state.setSession);
