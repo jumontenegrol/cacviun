@@ -94,7 +94,7 @@ function Login() {
 
       <div className="login-box">
         <h1>Login</h1>
-        <p>Sign in to continue. Cambio de proxy</p>
+        <p>Sign in to continue. Daniel es un bobo Estupido</p>
 
         <form onSubmit={(e) => e.preventDefault()}>
           <label>Email</label>
