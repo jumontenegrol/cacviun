@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/cacviun/static/css/main.923b280a.css",
-    "main.js": "/cacviun/static/js/main.fa6da106.js",
+    "main.js": "/cacviun/static/js/main.4963f253.js",
     "static/media/Edificio_de_Medicina.jpg": "/cacviun/static/media/Edificio_de_Medicina.caffbe77187eb6aa85a4.jpg",
     "index.html": "/cacviun/index.html",
     "main.923b280a.css.map": "/cacviun/static/css/main.923b280a.css.map",
-    "main.fa6da106.js.map": "/cacviun/static/js/main.fa6da106.js.map"
+    "main.4963f253.js.map": "/cacviun/static/js/main.4963f253.js.map"
   },
   "entrypoints": [
     "static/css/main.923b280a.css",
-    "static/js/main.fa6da106.js"
+    "static/js/main.4963f253.js"
   ]
 }
