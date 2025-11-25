@@ -6,6 +6,7 @@ import "./../styles/App.css";
 import ConfirmCode from "../components/ConfirmCode";
 
 function ForgotPassword() {
+  const path = "https://cacviun-backend.onrender.com";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -55,7 +56,7 @@ function ForgotPassword() {
 
     // Para forgotPassword: el correo DEBE existir
     try{
-      const res = await fetch(`/user/exist-email/${email}`);
+      const res = await fetch(`${path}/user/exist-email/${email}`);
       const data = await res.json();
       if (data.exist === false) {
         toast.error("The email address does not exist in the system.", { theme: "colored" });
@@ -72,7 +73,7 @@ function ForgotPassword() {
       setShowConfirm(true);
 
       const body = { email: correo, type: "forgot" };
-      const res = await fetch("/user/send-verification-code", {
+      const res = await fetch(`${path}/user/send-verification-code`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -98,7 +99,7 @@ function ForgotPassword() {
         password: password.trim(),
       };
 
-      const res = await fetch("/user/reset-password", {
+      const res = await fetch(`${path}/user/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

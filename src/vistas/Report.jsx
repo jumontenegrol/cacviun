@@ -15,6 +15,7 @@ const violenceTypes = [
 
 function Report() {
   const session = useSessionStore((state) => state.session);
+  const path = "https://cacviun-backend.onrender.com";
 
   const name = session?.name || "";
   const email = session?.email || "";
@@ -80,7 +81,7 @@ function Report() {
         sendTime: new Date().toLocaleString("sv-SE"),
       };
 
-      const res = await fetch('/report/save-report',{
+      const res = await fetch(`${path}/report/save-report`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

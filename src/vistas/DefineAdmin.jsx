@@ -5,6 +5,7 @@ import "./../styles/Report.css";
 import Header from "../components/Header";
 
 function Report() {
+  const path = "https://cacviun-backend.onrender.com";
   const [email, setEmail] = useState("");
 
   const handleSubmit = async (e) => {
@@ -24,7 +25,7 @@ function Report() {
     }
 
     try{
-      const res = await fetch(`/user/exist-email/${email}`);
+      const res = await fetch(`${path}/user/exist-email/${email}`);
       const data = await res.json();
       if (data.exist === false) {
         toast.error("The email address does not exist in the system.", { theme: "colored" });
@@ -39,7 +40,7 @@ function Report() {
 
     try{
       const body = {email: correo};
-      const res = await fetch('/user/define-admin',{
+      const res = await fetch(`${path}/user/define-admin`,{
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

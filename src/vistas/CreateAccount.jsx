@@ -6,6 +6,7 @@ import "./../styles/App.css";
 import ConfirmCode from "../components/ConfirmCode";
 
 function CreateAccount() {
+  const path = "https://cacviun-backend.onrender.com";
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,7 +58,7 @@ function CreateAccount() {
     }
 
     try{
-      const res = await fetch(`/user/exist-email/${correo}`);
+      const res = await fetch(`${path}/user/exist-email/${correo}`);
       const data = await res.json();
       if(data.exist === true){
         toast.error("Email already exists.", { theme: "colored" });
@@ -74,7 +75,7 @@ function CreateAccount() {
       setShowConfirm(true);
 
       const body = { name: nombre, email: correo, type: "register" };
-      const res = await fetch("/user/send-verification-code", {
+      const res = await fetch(`${path}/user/send-verification-code`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -102,7 +103,7 @@ function CreateAccount() {
         role: "2",
       };
 
-      const res = await fetch("/user/register", {
+      const res = await fetch(`${path}/user/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

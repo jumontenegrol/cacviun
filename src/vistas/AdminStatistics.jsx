@@ -60,7 +60,7 @@ function AdminStatistics() {
         return;
       }
 
-      const res = await fetch(`/report/delete/${id}`, {
+      const res = await fetch(`${path}/report/delete/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });
@@ -103,7 +103,7 @@ function AdminStatistics() {
         description: editedData.description,
       };
 
-      const res = await fetch(`/report/edit/${id}`, {
+      const res = await fetch(`${path}/report/edit/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

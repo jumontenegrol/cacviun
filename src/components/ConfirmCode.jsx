@@ -3,6 +3,7 @@ import "./../styles/ConfirmCode.css";
 import { toast } from "react-toastify";
 
 function ConfirmCode({ email, type, onClose, onSuccess }) {
+  const path = "https://cacviun-backend.onrender.com";
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +19,7 @@ function ConfirmCode({ email, type, onClose, onSuccess }) {
         type: type,
       };
 
-      const res = await fetch("/user/verify-code", {
+      const res = await fetch(`${path}/user/verify-code`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

@@ -17,13 +17,14 @@ function extractId(report) {
 }
 
 function PersonalStatistics() {
+  const path = "https://cacviun-backend.onrender.com";
   const session = useSessionStore((state) => state.session);
 
   const [incidentes, setIncidentes] = useState([]);
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch(`/report/history/${session.email}`);
+      const res = await fetch(`${path}/report/history/${session.email}`);
 
       if (!res.ok) {
         console.error("Error when checking history");
@@ -59,7 +60,7 @@ function PersonalStatistics() {
         return;
       }
 
-      const res = await fetch(`/report/delete/${id}`, {
+      const res = await fetch(`${path}/report/delete/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });
@@ -100,7 +101,7 @@ function PersonalStatistics() {
         description: editedData.description,
       };
 
-      const res = await fetch(`/report/edit/${id}`, {
+      const res = await fetch(`${path}/report/edit/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
