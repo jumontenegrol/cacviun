@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://jumontenegrol.github.io/cacviun",
-  "proxy": "http://localhost:3000",
+  "proxy": "https://cacviun-backend.onrender.com",
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
