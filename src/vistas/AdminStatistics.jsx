@@ -16,7 +16,7 @@ function extractId(report) {
 
 function AdminStatistics() {
   const [incidentes, setIncidentes] = useState([ ]);
-  const path = "https://cacviun-backen-onrender.com";
+  const path = "https://cacviun-backend.onrender.com";
   
   
     const fetchHistory = async () => {
