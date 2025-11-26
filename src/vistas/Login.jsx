@@ -94,7 +94,7 @@ function Login() {
 
       <div className="login-box">
         <h1>Login</h1>
-        <p>Sign in to continue..</p>
+        <p>Sign in to continue. Prueba 1 de persistencia</p>
 
         <form onSubmit={(e) => e.preventDefault()}>
           <label>Email</label>
