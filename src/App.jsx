@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Login from "./vistas/Login.jsx";
 import CreateAccount from "./vistas/CreateAccount.jsx";
 import Map from "./vistas/Map.jsx";
@@ -11,7 +11,6 @@ import AdminStatistics from "./vistas/AdminStatistics.jsx";
 
 export default function App() {
   return (
-    <BrowserRouter basename="/cacviun"> {/* <- IMPORTANTE para GitHub Pages */}
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/createAccount" element={<CreateAccount />} />
@@ -22,6 +21,5 @@ export default function App() {
         <Route path="/adminStatistics" element={<AdminStatistics />} />
         <Route path="/defineAdmin" element={<DefineAdmin />} />
       </Routes>
-    </BrowserRouter>
   );
 }
