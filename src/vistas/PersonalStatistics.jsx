@@ -179,11 +179,11 @@ function PersonalStatistics() {
 
       <div className="Statistics-content">
         <h1 className="Statistics-form-title" style={{ textAlign: "center" }}>
-          STATISTICS
+          PERSONAL REPORT HISTORY
         </h1>
 
-        <p style={{ textAlign: "center", fontSize: "0.8rem" }}>
-          IN THIS SPACE YOU CAN SEE THE GENERAL STATISTICS
+        <p style={{ textAlign: "center", fontSize: "0.9rem" }}>
+          IN THIS SPACE YOU CAN SEE YOUR PERSONAL REPORT HISTORY
         </p>
 
         {incidentes.length > 0 ? (

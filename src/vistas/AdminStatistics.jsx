@@ -182,14 +182,14 @@ function AdminStatistics() {
           className="Statistics-form-title"
           style={{ textAlign: "center", padding: "0.1rem" }}
         >
-          ADMIN STATISTICS
+          HISTORIAL FOR ADMIN
         </h1>
 
         <p
           className="Statistics-form-subtitle"
-          style={{ textAlign: "center", fontSize: "0.8rem", padding: "0.3rem" }}
+          style={{ textAlign: "center", fontSize: "0.9rem", padding: "0.3rem" }}
         >
-          IN THIS SPACE YOU CAN SEE THE GENERAL STATISTICS
+          IN THIS SPACE YOU CAN SEE REPORTS MADE BY ALL USERS
         </p>
 
         {/* Tabla de incidentes */}

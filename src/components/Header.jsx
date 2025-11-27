@@ -22,7 +22,7 @@ const Header = () => {
             </Link>
 
             <Link to="/personalStatistics">
-              <button className="header-btn">See your statistics</button>
+              <button className="header-btn">See your Historial</button>
             </Link>
 
             <Link to="/report">
@@ -35,7 +35,7 @@ const Header = () => {
         {session.role === "1" && (
           <>
             <Link to="/adminStatistics">
-            <button className="header-btn">Admin Statistics</button>
+            <button className="header-btn">Historial for Admin</button>
             </Link>
 
             <Link to="/defineAdmin">
