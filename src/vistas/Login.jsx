@@ -62,7 +62,7 @@ function Login() {
         });
         console.log(data.session);
         setSession(data.session);
-        navigate("/map");
+        navigate("/statistics");
       } else {
         toast.error(data.message, {
           position: "top-center",

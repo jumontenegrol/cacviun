@@ -4,8 +4,6 @@ import "./../styles/Statistics.css";
 import { ToastContainer, toast } from "react-toastify";
 import DeleteConfirm from "../components/DeleteReport";
 import EditReport from "../components/EditReport";
-import { useSessionStore } from "./../session/sessionStore.ts";
-
 
 function extractId(report) {
   if (!report) return null;
@@ -16,42 +14,44 @@ function extractId(report) {
   return null;
 }
 
-function PersonalStatistics() {
+function AdminHistory() {
+  const [incidentes, setIncidentes] = useState([ ]);
   const path = "https://cacviun-backend.onrender.com";
-  const session = useSessionStore((state) => state.session);
+  
+  
+    const fetchHistory = async () => {
+      try {
+        const res = await fetch(`${path}/report/admin-history`);
 
-  const [incidentes, setIncidentes] = useState([]);
+        if (!res.ok) {
+          console.error("Error when checking history");
+          return;
+        }
 
-  const fetchHistory = async () => {
-    try {
-      const res = await fetch(`${path}/report/history/${session.email}`);
+        const data = await res.json();
 
-      if (!res.ok) {
-        console.error("Error when checking history");
-        return;
+        setIncidentes(data.reportHistory || []);
+
+      } catch (error) {
+        console.error("Error connecting to server", error);
       }
-
-      const data = await res.json();
-      setIncidentes(data.reportHistory || []);
-    } catch (error) {
-      console.error("Error connecting to server", error);
-    }
-  };
-
+    };
   useEffect(() => {
     fetchHistory();
-  }, [session.email]);
+  }, []);
 
-  
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+
   const [selectedReport, setSelectedReport] = useState(null);
 
+  // DELETE — abre modal
   const handleDeleteClick = (rep) => {
     setSelectedReport(rep);
     setShowDeleteModal(true);
   };
 
+  //DELETE — ejecuta confirmación
   const confirmDelete = async () => {
     try {
       const id = extractId(selectedReport);
@@ -69,7 +69,7 @@ function PersonalStatistics() {
 
       if (res.ok && data.success) {
         toast.success("Report deleted successfully!", { theme: "colored" });
-        await fetchHistory();
+        await fetchHistory(); // recargar lista real
       } else {
         toast.error(data.message || "Error deleting report", {
           theme: "colored",
@@ -83,11 +83,13 @@ function PersonalStatistics() {
     setShowDeleteModal(false);
   };
 
+  // EDIT — abre modal
   const handleEditClick = (rep) => {
     setSelectedReport(rep);
     setShowEditModal(true);
   };
 
+  // EDIT — guardar cambios
   const saveEditedReport = async (editedData) => {
     try {
       const id = extractId(editedData);
@@ -97,7 +99,7 @@ function PersonalStatistics() {
       }
 
       const body = {
-        category: editedData.category,
+        category: editedData.category, // string legible
         description: editedData.description,
       };
 
@@ -111,7 +113,7 @@ function PersonalStatistics() {
 
       if (res.ok && data.success) {
         toast.success("Report updated successfully!", { theme: "colored" });
-        await fetchHistory();
+        await fetchHistory(); // refrescar datos desde backend real
       } else {
         toast.error(data.message || "Error updating report", {
           theme: "colored",
@@ -126,66 +128,71 @@ function PersonalStatistics() {
   };
 
   // ==========================================
-  // PAGINACIÓN + ITERATOR PATTERN
-  // ==========================================
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 15;
-
-  function createIncidentIterator(collection) {
-    let index = 0;
-
-    return {
-      next: () => {
-        if (index < collection.length) {
-          return { value: collection[index++], done: false };
-        }
-        return { done: true };
-      },
+    // PAGINACIÓN + ITERATOR PATTERN
+    // ==========================================
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 15;
+  
+    function createIncidentIterator(collection) {
+      let index = 0;
+  
+      return {
+        next: () => {
+          if (index < collection.length) {
+            return { value: collection[index++], done: false };
+          }
+          return { done: true };
+        },
+      };
+    }
+  
+    const indexOfLast = currentPage * itemsPerPage;
+    const indexOfFirst = indexOfLast - itemsPerPage;
+  
+    const currentIncidents = incidentes.slice(indexOfFirst, indexOfLast);
+  
+    const iterator = createIncidentIterator(currentIncidents);
+  
+    let visibleRows = [];
+    let step = iterator.next();
+    while (!step.done) {
+      visibleRows.push(step.value);
+      step = iterator.next();
+    }
+  
+    const nextPage = () => {
+      if (currentPage < Math.ceil(incidentes.length / itemsPerPage)) {
+        setCurrentPage(currentPage + 1);
+      }
     };
-  }
+  
+    const prevPage = () => {
+      if (currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    };
+  
 
-  const indexOfLast = currentPage * itemsPerPage;
-  const indexOfFirst = indexOfLast - itemsPerPage;
-
-  const currentIncidents = incidentes.slice(indexOfFirst, indexOfLast);
-
-  const iterator = createIncidentIterator(currentIncidents);
-
-  let visibleRows = [];
-  let step = iterator.next();
-  while (!step.done) {
-    visibleRows.push(step.value);
-    step = iterator.next();
-  }
-
-  const nextPage = () => {
-    if (currentPage < Math.ceil(incidentes.length / itemsPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const prevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  // ==========================================
-  // RENDER
-  // ==========================================
   return (
     <div className="Statistics-container">
       <Header view="statistics" />
 
       <div className="Statistics-content">
-        <h1 className="Statistics-form-title" style={{ textAlign: "center" }}>
-          PERSONAL REPORT HISTORY
+        <h1
+          className="Statistics-form-title"
+          style={{ textAlign: "center", padding: "0.1rem" }}
+        >
+          HISTORIAL FOR ADMIN
         </h1>
 
-        <p style={{ textAlign: "center", fontSize: "0.9rem" }}>
-          IN THIS SPACE YOU CAN SEE YOUR PERSONAL REPORT HISTORY
+        <p
+          className="Statistics-form-subtitle"
+          style={{ textAlign: "center", fontSize: "0.9rem", padding: "0.3rem" }}
+        >
+          IN THIS SPACE YOU CAN SEE REPORTS MADE BY ALL USERS
         </p>
 
+        {/* Tabla de incidentes */}
         {incidentes.length > 0 ? (
           <div className="tabla-container">
             <table className="tabla-incidentes">
@@ -197,7 +204,6 @@ function PersonalStatistics() {
                   <th>Date</th>
                   <th>Category</th>
                   <th>Zone</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
 
@@ -254,7 +260,7 @@ function PersonalStatistics() {
               >
                 Next ▶
               </button>
-            </div>
+            </div> 
           </div>
         ) : (
           <p style={{ textAlign: "center", fontSize: "0.8rem" }}>
@@ -292,4 +298,4 @@ function PersonalStatistics() {
   );
 }
 
-export default PersonalStatistics;
+export default AdminHistory;

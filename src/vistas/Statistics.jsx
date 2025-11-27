@@ -2,7 +2,7 @@ import React from "react";
 import "./../styles/Report.css";
 import Header from "../components/Header";
 
-function Map() {
+function Statistics() {
   return (
     <div className="report-container">
       <Header view="map" />
@@ -57,4 +57,4 @@ function Map() {
   );
 }
 
-export default Map;
+export default Statistics;
