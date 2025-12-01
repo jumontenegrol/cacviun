@@ -1,42 +1,84 @@
+/* ===== GLOBAL CONTAINER ===== */
 .statistics-view {
   width: 100%;
   min-height: 100vh;
-  background: #f9f7ff;
-  padding-bottom: 3rem;
+  background: #f5f6fa;
+  padding-bottom: 4rem;
+  font-family: "Inter", sans-serif;
 }
 
+/* ===== PAGE HEADER ===== */
 .statistics-charts-container {
-  width: 90%;
-  max-width: 1200px;
+  width: 92%;
+  max-width: 1250px;
   margin: auto;
+  padding-top: 2rem;
 }
 
 .page-title {
   text-align: center;
-  margin-top: 1.5rem;
-  color: #4c1d95;
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #1e1e2f;
+  letter-spacing: -0.5px;
 }
 
 .page-subtitle {
   text-align: center;
-  font-size: 1rem;
-  margin-bottom: 2rem;
-  color: #6b7280;
+  font-size: 1.15rem;
+  color: #6c6f85;
+  margin-top: 0.3rem;
+  margin-bottom: 2.5rem;
 }
 
+/* ===== CHART CARDS ===== */
 .chart-box {
   background: white;
-  padding: 1.5rem;
-  border-radius: 16px;
-  box-shadow: 0px 4px 10px #cfc7ff;
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0, 0, 70, 0.06);
+  margin-bottom: 2.6rem;
+  transition: all 0.25s ease-in-out;
+  border: 1px solid #ebe9f3;
+}
+
+.chart-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 70, 0.08);
+}
+
+/* ===== TITLES ===== */
+.chart-title {
+  text-align: left;
+  margin-bottom: 1rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #2d2d44;
+  border-left: 4px solid #7c3aed;
+  padding-left: 10px;
+}
+
+/* ===== EXTRA ELEMENTS ===== */
+.statistics-meta {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
   margin-bottom: 2rem;
 }
 
-.chart-title {
-  text-align: center;
-  margin-bottom: 1rem;
-  color: #4c1d95;
-  font-size: 1.3rem;
+.stat-pill {
+  background: #fff;
+  padding: 0.9rem 1.4rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(50, 40, 120, 0.05);
+  font-size: 1rem;
+  font-weight: 500;
+  color: #4c4f69;
+  border: 1px solid #e8e6f2;
+  transition: 0.2s;
+}
+
+.stat-pill:hover {
+  background: #f4eeff;
+  border-color: #c2b5ff;
 }
