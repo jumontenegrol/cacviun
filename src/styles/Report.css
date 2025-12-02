@@ -1,10 +1,10 @@
-body {
+/*body {
   margin: 0;
   font-family: Arial, sans-serif;
   overflow-y: scroll;
 }
 
-/* --- Contenedor general --- */
+
 .report-container {
   background-color: #79438c;
   min-height: 100vh;
@@ -15,7 +15,6 @@ body {
   color: white;
 }
 
-/* --- Sticky header --- */
 .report-header {
   width: 100%;
   background-color: #79438c;
@@ -61,7 +60,7 @@ body {
   background-color: #5d2472;
 }
 
-/* --- Contenido del formulario --- */
+
 .report-content {
   background-color: #9d6baa;
   margin: 2rem 0;
@@ -138,7 +137,6 @@ textarea {
   text-align: center;
 }
 
-/* --- RESPONSIVE --- */
 @media (max-width: 768px) {
   .report-content {
     padding: 1.5rem;
@@ -188,4 +186,297 @@ textarea {
   border-radius: 5px;
   border: none;
   cursor: pointer;
+}
+*/
+
+/* ---------------------------------------------------
+   ESTILO GLOBAL
+--------------------------------------------------- */
+body {
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  overflow-y: scroll;
+  background-color: #f7f3fa;
+}
+
+/* ---------------------------------------------------
+   CONTENEDOR PRINCIPAL
+--------------------------------------------------- */
+.report-container {
+  background-color: #79438c;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+
+  /* Sutil efecto profesional */
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------------------------------------------------
+   HEADER / NAVBAR
+--------------------------------------------------- */
+.report-header {
+  width: 100%;
+  background-color: #79438c;
+  padding: 1.2rem 2.4rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border-bottom: 8px solid white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  /* sombra elegante */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+.logo {
+  font-weight: 900;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: white;
+
+  /* glow sutil */
+  text-shadow: 0 0 8px rgba(255,255,255,0.3);
+}
+
+.header-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.header-btn {
+  background-color: #6a2a82;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.6rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.25s ease-in-out;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+
+  /* sombra profesional */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.header-btn:disabled {
+  background-color: white;
+  color: #6a2a82;
+  cursor: default;
+  transform: none;
+}
+
+.header-btn:not(:disabled):hover {
+  background-color: #5d2472;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+/* ---------------------------------------------------
+   FORMULARIO PRINCIPAL
+--------------------------------------------------- */
+.report-content {
+  background-color: #9d6baa;
+  margin: 2.5rem 0;
+  padding: 2.8rem 3.4rem;
+  border-radius: 18px;
+
+  width: 90%;
+  max-width: 720px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  /* Sombras premium */
+  box-shadow: 0 12px 30px rgba(0,0,0,0.28),
+              0 3px 8px rgba(255,255,255,0.2) inset;
+  transition: 0.3s;
+}
+
+/* animación suave al pasar el mouse */
+.report-content:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 38px rgba(0,0,0,0.33),
+              0 4px 10px rgba(255,255,255,0.25) inset;
+}
+
+.form-title {
+  font-size: 2.4rem;
+  text-align: center;
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 6px rgba(0,0,0,0.25);
+}
+
+.form-subtitle {
+  font-size: 1rem;
+  text-align: center;
+  opacity: 0.9;
+}
+
+/* ---------------------------------------------------
+   CAMPOS DEL FORMULARIO
+--------------------------------------------------- */
+.report-form-single-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.report-form-single-column label {
+  font-size: 0.95rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.report-form-single-column input,
+.report-form-single-column select,
+.report-form-single-column textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: none;
+  background: #ffffff;
+  font-size: 1rem;
+  color: #333;
+  transition: 0.25s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.report-form-single-column input:focus,
+.report-form-single-column select:focus,
+.report-form-single-column textarea:focus {
+  outline: 3px solid #d8b7e3;
+  transform: scale(1.015);
+}
+
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* ---------------------------------------------------
+   BOTÓN PRINCIPAL
+--------------------------------------------------- */
+.submit-btn {
+  background-color: #6a2a82;
+  color: white;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.25s ease-in-out;
+  align-self: center;
+
+  box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+}
+
+.submit-btn:hover {
+  background-color: #5d2472;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.35);
+}
+
+/* ---------------------------------------------------
+   ERRORES
+--------------------------------------------------- */
+.error-msg {
+  color: #ffb0b0;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* ---------------------------------------------------
+   MODAL
+--------------------------------------------------- */
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-box {
+  background: #79438c;
+  padding: 22px 32px;
+  border-radius: 12px;
+  width: 400px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+
+.modal-buttons {
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.yes-btn,
+.no-btn {
+  padding: 10px 22px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.25s;
+  font-size: 0.95rem;
+}
+
+.yes-btn {
+  background: #2e7d32;
+}
+
+.no-btn {
+  background: #c62828;
+}
+
+.yes-btn:hover,
+.no-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+
+/* ---------------------------------------------------
+   ANIMACIONES
+--------------------------------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ---------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------- */
+@media (max-width: 768px) {
+  .report-content {
+    padding: 1.8rem;
+  }
+
+  .form-title {
+    font-size: 1.9rem;
+  }
 }
