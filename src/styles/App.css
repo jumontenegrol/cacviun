@@ -1,225 +1,266 @@
 @import "leaflet/dist/leaflet.css";
 
-* {
-  box-sizing: border-box;
+/* --- 1. Definición de Variables CSS y Reset --- */
+:root {
+  /* Paleta de Colores (inspirada en UNAL oscuro) */
+  --color-primary: #4b1959; /* Púrpura oscuro */
+  --color-secondary: #8a4f9b; /* Púrpura claro/Acento */
+  --color-background-box: rgba(75, 25, 89, 0.95); /* Fondo semitransparente de las cajas */
+  --color-text: #ffffff;
+  --color-text-muted: #e0e0e0;
+  --color-input-bg: #f5f5f5;
+  --color-input-text: #222222;
+
+  /* Espaciado (basado en rem para escalabilidad) */
+  --spacing-xs: 0.5rem;   /* 8px */
+  --spacing-sm: 1rem;     /* 16px */
+  --spacing-md: 1.5rem;   /* 24px */
+  --spacing-lg: 2rem;     /* 32px */
+
+  /* Transiciones */
+  --transition-speed: 0.3s;
 }
 
-/* --- Background + layout --- */
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  /* Animación suave para todas las propiedades */
+  transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed), box-shadow var(--transition-speed), transform var(--transition-speed);
+  font-family: sans-serif; /* Puedes cambiar esto por una fuente más profesional como 'Roboto' o 'Open Sans' */
+}
+
+/* --- 2. Layout General (Background y Contenedor) --- */
 .background {
   background-image: url("./../assets/Edificio_de_Medicina.jpg");
   background-size: cover;
   background-position: center;
   min-height: 100vh;
-  padding-top: 6rem; /* espacio para header */
+  /* Usar Flexbox para el centrado simple */
   display: flex;
-  justify-content: center; /* contenido centrado horizontal */
-  align-items: flex-start;  /* empezar desde arriba (debajo del header) */
+  justify-content: center;
+  align-items: center; /* Centrar verticalmente en la pantalla (mejor para formularios) */
+  padding: 6rem var(--spacing-sm) var(--spacing-sm); /* Espacio para el header y márgenes laterales */
   position: relative;
 }
 
-/* --- Header decorativo (fijo en la parte superior) --- */
+/* --- 3. Header Decorativo --- */
 .header {
-  background-color: rgba(128, 0, 128, 0.5);
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-text);
   width: 100%;
   text-align: right;
-  padding: 1rem 2rem;
-  font-weight: bold;
-  font-size: 1.5rem;
-  position: absolute;
+  padding: 1rem var(--spacing-lg);
+  font-weight: 700;
+  font-size: 1.75rem;
+  position: fixed; /* 'fixed' es mejor para que no se mueva */
   top: 0;
   left: 0;
   z-index: 10;
+  /* Sombra sutil para destacarse del fondo */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-/* --- Login Box: proporciones y inputs --- */
-/* ahora más ancho en escritorio, mejor padding, centrado verticalmente dentro del área visible */
+/* --- 4. Login Box (El Formulario) --- */
 .login-box {
-  background-color: rgba(128, 0, 128, 0.6);
-  color: white;
-  padding: 2.2rem;
-  border-radius: 20px;
+  background-color: var(--color-background-box);
+  color: var(--color-text);
+  padding: var(--spacing-lg);
+  border-radius: 12px;
   width: 100%;
-  max-width: 420px;   /* Aumentado para mejor proporción */
-  text-align: left;   /* labels a la izquierda para mejor lectura */
-  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-  margin: 2rem;       /* separación respecto al borde */
+  max-width: 440px; /* Ancho optimizado */
+  text-align: left;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  /* Animación: se eleva un poco al centrarlo */
+  animation: fadeInDown 0.5s ease-out;
 }
 
-/* Título centrado interno, pero el resto alineado a la izquierda */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .login-box h1 {
-  margin: 0 0 0.25rem 0;
+  margin: 0 0 var(--spacing-xs) 0;
   text-align: center;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
+  font-weight: 800;
 }
 
 .login-box p {
-  margin: 0 0 1rem 0;
-  font-size: 0.95rem;
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: 1rem;
   text-align: center;
+  color: var(--color-text-muted);
 }
 
-/* Form layout: labels encima de inputs, buen gap */
+/* Form layout */
 .login-box form {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.login-box label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.2rem;
+  color: var(--color-text);
+}
+
+/* Inputs */
+.login-box input {
+  padding: 0.8rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
+}
+
+/* Efecto de foco para accesibilidad y estética */
+.login-box input:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(138, 79, 155, 0.5); /* Sombra púrpura suave */
+}
+
+/* --- 5. Estilos de Botones y Enlaces --- */
+
+/* Botón base (para todos los botones dentro del form y de la caja) */
+.login-box button {
+  border: none;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  width: 100%; /* Asegura que todos los botones de acción ocupen todo el ancho */
+  text-align: center;
   margin-top: 0.5rem;
 }
 
-/* Labels más visibles, tamaño cómodo */
-.login-box label {
-  display: block;
-  font-weight: 700;
-  font-size: 0.9rem;
-  margin-bottom: 0.25rem;
-  color: #fff;
+/* Botón Primario (el de acción principal: Login, Submit) */
+.btn-primary {
+  background-color: var(--color-secondary);
+  color: var(--color-text);
 }
 
-/* Inputs: mayor altura y padding para click/tap cómodo */
-.login-box input {
-  padding: 0.75rem 0.9rem;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  width: 100%;
-  background: #fff;
-  color: #222;
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary); /* Se oscurece al pasar el ratón */
+  /* Animación: ligero escalado */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-/* Botones: tamaño coherente y centrado */
-.login-box .actions {
-  display: flex;
-  gap: 0.6rem;
-  justify-content: center;
-  margin-top: 0.6rem;
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
 }
 
-.login-box button {
-  background-color: #4b1959;
-  color: white;
-  border: none;
-  padding: 0.65rem 1rem;
-  border-radius: 8px;
+/* Enlaces de texto/Botones de acción secundaria (Create Account, Forgot Password) */
+button.text-link {
+  /* Reset de estilos de botón para que parezca un enlace */
+  all: unset;               
   cursor: pointer;
-  font-weight: 700;
-  min-width: 120px;
+  color: var(--color-text-muted); /* Color más sutil */
+  text-decoration: none;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  display: block; /* Para que ocupen su propia línea y el margin funcione */
   text-align: center;
-  display: block;
-  margin: 0 auto;
+  margin: var(--spacing-xs) 0; /* Espaciado vertical sutil */
 }
 
-.secondary {
-  background-color: transparent;
-  border: 1px solid white;
+button.text-link:hover,
+button.text-link:focus {
+  color: var(--color-secondary); /* Acentúa el color al pasar el ratón */
+  text-decoration: underline;
+  outline: none;
 }
 
-/* separator */
+/* Separador */
 .separator {
-  margin: 0.6rem 0;
+  margin: var(--spacing-sm) 0 var(--spacing-xs) 0;
   font-weight: 400;
   font-size: 0.9rem;
   text-align: center;
+  color: var(--color-text-muted);
+  position: relative;
 }
 
-/* Ajustes móviles: caja ocupa casi todo el ancho y espaciado reducido */
-@media (max-width: 480px) {
+/* Líneas a los lados del separador (estética profesional) */
+.separator:not(:empty)::before,
+.separator:not(:empty)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 30%; /* Línea ocupa 30% del ancho */
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3); /* Línea blanca sutil */
+}
+
+.separator:not(:empty)::before {
+    left: 0;
+}
+
+.separator:not(:empty)::after {
+    right: 0;
+}
+
+
+/* --- 6. Media Queries (Responsiveness) --- */
+
+/* Teléfonos (max-width: 600px) */
+@media (max-width: 600px) {
+  .header {
+    padding: 0.8rem var(--spacing-md);
+    font-size: 1.5rem;
+  }
+
   .background {
-    padding-top: 5.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    /* Permitir que la caja de login empiece más arriba en móviles */
+    align-items: flex-start;
+    padding: 5.5rem var(--spacing-sm) var(--spacing-sm);
   }
 
   .login-box {
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) 0;
     max-width: 100%;
-    padding: 1.2rem;
-    border-radius: 12px;
-    margin: 1rem 0;
-    text-align: left;
+    border-radius: 10px;
   }
 
   .login-box h1 {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 
+  /* Reducir el padding de los inputs para ahorrar espacio vertical */
   .login-box input {
-    padding: 0.6rem 0.75rem;
-    font-size: 0.95rem;
+    padding: 0.65rem 0.8rem;
+    font-size: 0.9rem;
   }
 
   .login-box button {
-    padding: 0.6rem 0.8rem;
-    min-width: 100px;
-  }
-
-  button.text-link {
-  all: unset;               
-  display: inline-block;
-  cursor: pointer;
-  color: #ffffff;          
-  text-decoration: underline;
-  font-size: 0.95rem;
-  line-height: 1;
-  padding: 0;               
-  margin: 0.4rem 0;         
-  text-align: left;
-  }
-
-  button.text-link:hover,
-  button.text-link:focus {
-    opacity: 0.9;
-    text-decoration: none;
-    outline: none;
-  }
-
-  .text-link-right {
-    display: inline-block;
-    margin-left: auto;
+    padding: 0.7rem 1rem;
+    font-size: 0.95rem;
   }
 }
 
-.btn-primary {
-  background-color: #4b1959;
-  color: white;
-  border: none;
-  padding: 0.7rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  width: 100%;
-  margin-top: 0.8rem;
-  font-size: 1rem;
-  text-align: center;
-}
-
-.btn-secondary {
-  background-color: transparent;
-  border: 2px solid white;
-  color: white;
-  padding: 0.7rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 700;
-  width: 100%;
-  margin-top: 0.6rem;
-  font-size: 1rem;
-  text-align: center;
-}
-
-
-.btn-link {
-  background: none;
-  border: none;
-  color: #ffffff;
-  text-decoration: underline;
-  font-size: 0.95rem;
-  margin-top: 0.8rem;
-  cursor: pointer;
-  display: block;
-  text-align: center;
-}
-
-.btn-link:hover {
-  opacity: 0.9;
-  text-decoration: none;
+/* Para garantizar que los botones de acción en Login.jsx usen el nuevo estilo: */
+/* La única edición en los .jsx es cambiar `text-link` por `btn-primary` en el botón de Login */
+.login-box button[type="submit"], 
+.login-box .btn-primary {
+  margin-top: var(--spacing-md); /* Espacio antes del botón principal */
 }

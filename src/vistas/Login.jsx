@@ -116,7 +116,7 @@ function Login() {
           />
 
           {/*<button type="button" className="btn-primary" onClick={handleLoginClick}>*/}
-          <button type="button" className="text-link" onClick={handleLoginClick}>
+          <button type="button" className="btn-primary" onClick={handleLoginClick}>
             Login
           </button>
         </form>

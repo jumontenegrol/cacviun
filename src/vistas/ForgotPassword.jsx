@@ -158,7 +158,7 @@ function ForgotPassword() {
             required
           />
 
-          <button type="button" onClick={handleSubmitRegister}>
+          <button type="button" className="btn-primary" onClick={handleSubmitRegister}>
             Submit
           </button>
         </form>
