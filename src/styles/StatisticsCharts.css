@@ -2,17 +2,36 @@
 .statistics-view {
   width: 100%;
   min-height: 100vh;
-  background: #f5f6fa;
+  background: #70258581; ;
   padding-bottom: 4rem;
-  font-family: "Inter", sans-serif;
+  display: flex;
+  justify-content: flex-start;
 }
 
 /* ===== PAGE HEADER ===== */
 .statistics-charts-container {
-  width: 92%;
-  max-width: 1250px;
+  width: 95%;
+  max-width: 2500px;
   margin: auto;
   padding-top: 2rem;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+/* Tablet (≤900px) → 2 columnas */
+@media (max-width: 900px) {
+  .statistics-charts-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Celular (≤600px) → 1 columna */
+@media (max-width: 600px) {
+  .statistics-charts-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .page-title {
@@ -21,6 +40,7 @@
   font-weight: 700;
   color: #1e1e2f;
   letter-spacing: -0.5px;
+  grid-column: 1 / -1;
 }
 
 .page-subtitle {
@@ -29,6 +49,7 @@
   color: #6c6f85;
   margin-top: 0.3rem;
   margin-bottom: 2.5rem;
+  grid-column: 1 / -1;
 }
 
 /* ===== CHART CARDS ===== */
@@ -37,9 +58,9 @@
   padding: 2rem;
   border-radius: 18px;
   box-shadow: 0 6px 20px rgba(0, 0, 70, 0.06);
-  margin-bottom: 2.6rem;
-  transition: all 0.25s ease-in-out;
   border: 1px solid #ebe9f3;
+  transition: 0.25s;
+  margin-bottom: 2.6rem;
 }
 
 .chart-box:hover {
