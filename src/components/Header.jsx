@@ -16,17 +16,19 @@ const Header = () => {
       <div className="header-buttons">
 
         {session.role && (
-          <>
-            <Link to="/statistics">
+          <Link to="/statistics">
               <button className="header-btn">Dashboard</button>
+            </Link>
+        )}
+
+        {session.role !== "3" && (
+          <>
+            <Link to="/report">
+              <button className="header-btn">Make a report</button>
             </Link>
 
             <Link to="/personalHistory">
               <button className="header-btn">Your Reports</button>
-            </Link>
-
-            <Link to="/report">
-              <button className="header-btn">Make a report</button>
             </Link>
           </>
         )}
@@ -40,6 +42,14 @@ const Header = () => {
 
             <Link to="/defineAdmin">
               <button className="header-btn">Define New Admin</button>
+            </Link>
+          </>
+        )}
+
+        {session.role === "3" && (
+          <>
+            <Link to="/adminHistory">
+            <button className="header-btn">Reports to Answer</button>
             </Link>
           </>
         )}

@@ -6,6 +6,18 @@ import DeleteConfirm from "../components/DeleteReport.jsx";
 import EditReport from "../components/EditReport.jsx";
 import { useSessionStore } from "../session/sessionStore.ts";
 
+// Listas de opciones (deben estar fuera del componente o definidas dentro)
+const violenceTypes = [
+  "Physical Violence",
+  "Psychological Violence",
+  "Sexual Violence",
+  "Workplace Violence",
+  "Discrimination",
+];
+
+const zoneOptions = [
+  "Universidad Nacional"
+];
 
 function extractId(report) {
   if (!report) return null;
@@ -20,10 +32,31 @@ function PersonalHistory() {
   const path = "https://cacviun-backend.onrender.com";
   const session = useSessionStore((state) => state.session);
 
-  const [incidentes, setIncidentes] = useState([]);
+  const [incidentes, setIncidentes] = useState([]); // Lista completa sin filtrar
+  const [filteredIncidents, setFilteredIncidents] = useState([]); // Lista que se muestra
+  
+  // ==========================================
+  // ESTADOS DE FILTROS (SIN user_email)
+  // ==========================================
+  const [filters, setFilters] = useState({
+    ageMin: "",
+    ageMax: "",
+    category: "",
+    zone: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  // Manejador genérico para los cambios en los filtros
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
 
   const fetchHistory = async () => {
     try {
+      // Usamos el endpoint personal
       const res = await fetch(`${path}/report/history/${session.email}`);
 
       if (!res.ok) {
@@ -32,7 +65,9 @@ function PersonalHistory() {
       }
 
       const data = await res.json();
-      setIncidentes(data.reportHistory || []);
+      const allReports = data.reportHistory || [];
+      setIncidentes(allReports);
+      setFilteredIncidents(allReports); // Inicialmente, la lista filtrada es la lista completa
     } catch (error) {
       console.error("Error connecting to server", error);
     }
@@ -41,6 +76,72 @@ function PersonalHistory() {
   useEffect(() => {
     fetchHistory();
   }, [session.email]);
+
+  // ==========================================
+  // FUNCIÓN PRINCIPAL DE FILTRADO (SIN user_email)
+  // ==========================================
+  useEffect(() => {
+    const applyFilters = () => {
+      let tempIncidents = incidentes;
+
+      // 1. FILTRO por category
+      if (filters.category) {
+        tempIncidents = tempIncidents.filter((inc) =>
+          inc.category.toLowerCase() === filters.category.toLowerCase()
+        );
+      }
+      
+      // 2. FILTRO por zone
+      if (filters.zone) {
+        tempIncidents = tempIncidents.filter((inc) =>
+          inc.zone.toLowerCase() === filters.zone.toLowerCase()
+        );
+      }
+
+      // 3. FILTRO por age (Rango)
+      const minAge = parseInt(filters.ageMin);
+      const maxAge = parseInt(filters.ageMax);
+      
+      if (!isNaN(minAge)) {
+          tempIncidents = tempIncidents.filter((inc) => inc.age >= minAge);
+      }
+      if (!isNaN(maxAge)) {
+          tempIncidents = tempIncidents.filter((inc) => inc.age <= maxAge);
+      }
+      
+      // 4. FILTRO por creationTime (Rango de fechas)
+      const startDate = filters.startDate ? new Date(filters.startDate) : null;
+      const endDate = filters.endDate ? new Date(filters.endDate) : null;
+
+      if (startDate || endDate) {
+          tempIncidents = tempIncidents.filter(inc => {
+              const dateSource = inc.date || inc.creationTime;
+              if (!dateSource) return false;
+              
+              const reportDate = new Date(dateSource); 
+              let isValid = true;
+              
+              if (startDate) {
+                  isValid = isValid && reportDate >= startDate;
+              }
+              if (endDate) {
+                  const nextDay = new Date(endDate);
+                  nextDay.setDate(nextDay.getDate() + 1);
+                  isValid = isValid && reportDate < nextDay;
+              }
+              return isValid;
+          });
+      }
+
+
+      // Reiniciar la paginación al aplicar un nuevo filtro
+      setCurrentPage(1); 
+      setFilteredIncidents(tempIncidents);
+    };
+
+    applyFilters();
+  }, [filters, incidentes]);
+
 
   
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -126,7 +227,7 @@ function PersonalHistory() {
   };
 
   // ==========================================
-  // PAGINACIÓN + ITERATOR PATTERN
+  // PAGINACIÓN + ITERATOR PATTERN (usando filteredIncidents)
   // ==========================================
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
@@ -147,7 +248,8 @@ function PersonalHistory() {
   const indexOfLast = currentPage * itemsPerPage;
   const indexOfFirst = indexOfLast - itemsPerPage;
 
-  const currentIncidents = incidentes.slice(indexOfFirst, indexOfLast);
+  // ¡Usamos filteredIncidents!
+  const currentIncidents = filteredIncidents.slice(indexOfFirst, indexOfLast);
 
   const iterator = createIncidentIterator(currentIncidents);
 
@@ -159,7 +261,7 @@ function PersonalHistory() {
   }
 
   const nextPage = () => {
-    if (currentPage < Math.ceil(incidentes.length / itemsPerPage)) {
+    if (currentPage < Math.ceil(filteredIncidents.length / itemsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -185,8 +287,86 @@ function PersonalHistory() {
         <p style={{ textAlign: "center", fontSize: "0.9rem" }}>
           IN THIS SPACE YOU CAN SEE YOUR PERSONAL REPORT HISTORY
         </p>
+        
+        {/* ========================================== */}
+        {/* CONTROLES DE FILTRO (SIN EMAIL) */}
+        {/* ========================================== */}
+        <div className="filter-controls">
+            
+            {/* GRUPO 1: Category y Zone (Dropdowns) */}
+            <div className="filter-group">
+                {/* Filtro por Category (Dropdown) */}
+                <select
+                    name="category"
+                    value={filters.category}
+                    onChange={handleFilterChange}
+                    className="filter-select"
+                >
+                    <option value="">Filter by Category (All)</option>
+                    {violenceTypes.map(type => (
+                        <option key={type} value={type}>{type}</option>
+                    ))}
+                </select>
 
-        {incidentes.length > 0 ? (
+                {/* Filtro por Zone (Dropdown) */}
+                <select
+                    name="zone"
+                    value={filters.zone}
+                    onChange={handleFilterChange}
+                    className="filter-select"
+                >
+                    <option value="">Filter by Zone (All)</option>
+                    {zoneOptions.map(zone => (
+                        <option key={zone} value={zone}>{zone}</option>
+                    ))}
+                </select>
+            </div>
+            
+            {/* GRUPO 2: Rango de Edad y Fechas */}
+            <div className="filter-group">
+                <div className="filter-age-range">
+                    <input
+                        type="number"
+                        name="ageMin"
+                        placeholder="Min Age"
+                        value={filters.ageMin}
+                        onChange={handleFilterChange}
+                        className="filter-input"
+                    />
+                    <input
+                        type="number"
+                        name="ageMax"
+                        placeholder="Max Age"
+                        value={filters.ageMax}
+                        onChange={handleFilterChange}
+                        className="filter-input"
+                    />
+                </div>
+                
+                <div className="filter-date-range">
+                    <label>From:</label>
+                    <input
+                        type="date"
+                        name="startDate"
+                        value={filters.startDate}
+                        onChange={handleFilterChange}
+                        className="filter-input"
+                    />
+                    <label>To:</label>
+                    <input
+                        type="date"
+                        name="endDate"
+                        value={filters.endDate}
+                        onChange={handleFilterChange}
+                        className="filter-input"
+                    />
+                </div>
+            </div>
+            
+        </div>
+        
+
+        {filteredIncidents.length > 0 ? (
           <div className="tabla-container">
             <table className="tabla-incidentes">
               <thead>
@@ -242,12 +422,12 @@ function PersonalHistory() {
 
               <span className="pagination-info">
                 Page {currentPage} of{" "}
-                {Math.ceil(incidentes.length / itemsPerPage)}
+                {Math.ceil(filteredIncidents.length / itemsPerPage)}
               </span>
 
               <button
                 disabled={
-                  currentPage === Math.ceil(incidentes.length / itemsPerPage)
+                  currentPage === Math.ceil(filteredIncidents.length / itemsPerPage)
                 }
                 onClick={nextPage}
                 className="pagination-btn"
@@ -258,7 +438,7 @@ function PersonalHistory() {
           </div>
         ) : (
           <p style={{ textAlign: "center", fontSize: "0.8rem" }}>
-            No data available.
+            {incidentes.length === 0 ? "No data available." : "No reports match the current filters."}
           </p>
         )}
 

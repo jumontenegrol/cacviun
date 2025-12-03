@@ -16,15 +16,16 @@ body {
   color: white;
 }
 
-/* --- Contenido central --- */
+/* --- Contenido central (EXPANDIDO PARA OCUPAR TODO EL ANCHO) --- */
 .Statistics-content {
   background-color: #9d6baa;
-  margin: 2rem auto;
+  /* Cambio: Usar todo el ancho disponible */
+  margin: 2rem 1rem;
   padding: 2.5rem 3rem;
   border-radius: 10px;
 
-  width: 90%;
-  max-width: 1000px;
+  width: calc(100% - 2rem);
+  max-width: none; /* Asegura que no haya un límite máximo */
 
   display: flex;
   flex-direction: column;
@@ -128,6 +129,7 @@ body {
   transform: scale(0.95);
 }
 
+/* --- Paginación --- */
 .pagination-controls {
   display: flex;
   justify-content: center;
@@ -153,5 +155,131 @@ body {
 
 .pagination-info {
   font-size: 0.9rem;
-  color: #333;
+  color: #333; /* Usamos un color oscuro porque es texto que suele ir fuera del content púrpura */
+}
+
+/* ========================================== */
+/* --- ESTILOS PARA LOS FILTROS (NUEVOS) --- */
+/* ========================================== */
+
+/* Contenedor principal de filtros */
+.filter-controls {
+    display: flex;
+    flex-direction: row; /* En desktop/tablet, los grupos van en fila */
+    gap: 15px;
+    padding: 15px;
+    background-color: #8d52a0; /* Fondo intermedio */
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    justify-content: space-around;
+}
+
+/* Contenedor para agrupar elementos de filtro verticalmente */
+.filter-group {
+    display: flex;
+    flex-direction: column; /* Apilar entradas dentro del grupo */
+    flex: 1;
+    max-width: 300px;
+    gap: 8px;
+    justify-content: center;
+}
+
+/* Estilo base para todos los inputs y selects de filtro */
+.filter-input,
+.filter-select {
+    padding: 10px;
+    border: 1px solid #b98ed2;
+    border-radius: 6px;
+    background-color: #a873c0; /* Fondo lila para las entradas */
+    color: white;
+    font-size: 1rem;
+    width: 100%; /* Ocupar todo el ancho del .filter-group */
+    box-sizing: border-box; /* Asegurar que padding y border no aumenten el ancho */
+}
+
+/* Estilo especial para los select (dropdowns) */
+.filter-select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M7 10l5 5 5-5z" fill="%23ffffff"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+    cursor: pointer;
+}
+
+/* Estilo para los placeholders */
+.filter-input::placeholder {
+    color: #e0d0eb;
+    opacity: 0.8; 
+}
+
+/* Estilo para los labels de fecha */
+.filter-date-range label {
+    font-weight: bold;
+    font-size: 0.9rem;
+    align-self: center;
+    white-space: nowrap;
+}
+
+/* Estilo específico para el rango de edad y fecha */
+.filter-age-range,
+.filter-date-range {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.filter-age-range .filter-input {
+    max-width: 100px; /* Reducir ancho para edad */
+}
+
+/* ========================================== */
+/* --- MEDIA QUERY PARA MÓVILES (Responsive) --- */
+/* ========================================== */
+@media (max-width: 768px) {
+    
+    /* Contenedor Principal: Ajustar el padding */
+    .Statistics-content {
+        padding: 1.5rem 1rem; 
+        margin: 1rem 0.5rem; 
+        width: calc(100% - 1rem); 
+    }
+
+    /* Títulos: Reducir tamaño de fuente */
+    .Statistics-form-title {
+        font-size: 1.5rem;
+    }
+    
+    /* Filtros: Apilar todos los grupos verticalmente */
+    .filter-controls {
+        flex-direction: column; 
+        gap: 10px;
+    }
+
+    /* Los grupos de filtros también se apilan */
+    .filter-group {
+        max-width: 100%;
+        flex-direction: column; 
+        gap: 10px;
+    }
+    
+    /* Asegurar que el rango de edad y fecha se organicen bien */
+    .filter-age-range {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .filter-date-range {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap; 
+    }
+    
+    .filter-date-range label {
+        display: none; /* Ocultar labels para ahorrar espacio */
+    }
+
+    .filter-age-range .filter-input {
+      max-width: 100%;
+    }
 }
