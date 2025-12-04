@@ -16,7 +16,16 @@ const violenceTypes = [
 ];
 
 const zoneOptions = [
-  "Universidad Nacional"
+  "Plaza Central Che",
+  "Edificio Uriel Gutiérrez (Medicina)",
+  "Biblioteca Central (Hemeroteca)",
+  "Facultad de Ingeniería (Edificio 401)",
+  "Edificio de Ciencia y Tecnología (CYT)",
+  "Bosque de la Memoria",
+  "Maloka (Intercambiador - Ciudad Universitaria)",
+  "Estadio Alfonso López",
+  "Facultad de Artes (Taller de Arquitectura)",
+  "Museo de Arquitectura Leopoldo Rother",
 ];
 
 function extractId(report) {
