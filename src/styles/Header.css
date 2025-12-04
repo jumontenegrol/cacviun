@@ -34,7 +34,7 @@
 
 /* Contenedor de botones (Navegación Desktop) */
 .header-buttons {
-  display: flex;
+  display: flex; /* Aseguramos que sea flex por defecto en desktop */
   gap: 1rem;
   align-items: center;
 }
@@ -57,7 +57,7 @@
 .header-btn:hover {
   background-color: #b582ce; 
   border-color: #b582ce;
-  color: white;
+  color: white; /* Mantenemos el blanco */
 }
 
 /* Enlace/Botón activo */
@@ -83,7 +83,7 @@
 
 /* --- 2. Botón de Hamburguesa (Oculto en Desktop) --- */
 .menu-toggle {
-  display: none; 
+  display: none; /* Asegurado que esté oculto en desktop */
   background: none;
   border: none;
   cursor: pointer;
@@ -148,35 +148,32 @@
     display: block;
   }
 
-  /* Ocultar la navegación por defecto */
+  /* Ocultar la navegación por defecto (Solución del error) */
   .header-buttons {
-    display: none;
+    display: none !important; /* <--- ¡CRÍTICO! Forzar ocultamiento */
     flex-direction: column;
     position: absolute;
     top: 55px;
     left: 0;
     width: 100%;
-    /* CORRECCIÓN DE COLOR: Usar el color principal del header */
-    background-color: #79438c; 
+    background-color: #79438c; /* Color del header para coherencia */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    padding: 0; /* Quitamos padding vertical aquí, lo ponemos en los ítems */
+    padding: 0;
     z-index: 999;
     align-items: flex-start;
   }
 
   /* Mostrar la navegación cuando está abierto */
   .header-buttons.open {
-    display: flex;
+    display: flex !important; /* <--- ¡CRÍTICO! Forzar a mostrar */
   }
 
   /* Estilo de lista para los enlaces/botones en móvil */
   .header-buttons a {
     width: 100%;
-    /* CORRECCIÓN: Quitamos el padding horizontal del 'a' */
     padding: 0; 
     box-sizing: border-box;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Separador más visible */
-    
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   }
 
   .header-buttons a:last-child {
@@ -189,10 +186,10 @@
     background-color: transparent; 
     border: none;
     font-size: 1rem;
-    padding: 15px 20px; /* Padding interno del botón para el área de clic */
+    padding: 15px 20px; 
     width: 100%;
     text-align: left;
-    margin: 0; /* Asegurar que no haya márgenes extraños */
+    margin: 0;
   }
 
   /* Efectos hover/activo en móvil */
@@ -209,7 +206,6 @@
   
   /* Estilo especial para el botón de salir en móvil */
   .header-buttons .signout-btn {
-    /* Mantenemos un estilo más de botón al final de la lista */
     margin: 15px 20px;
     background-color: #d9534f !important; 
     border-radius: 6px;
