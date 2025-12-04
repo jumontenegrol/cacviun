@@ -3,13 +3,12 @@
 /* Lila intermedio (Activo): #a873c0 */
 /* Lila claro (Hover/Borde): #b582ce */
 /* Rojo de logout: #d9534f */
-/* Púrpura oscuro para móvil: #6a1b9a */
 
 
-/* --- 1. Estilos Base y Desktop (Colores Corregidos) --- */
+/* --- 1. Estilos Base y Desktop --- */
 .main-header {
   width: 100%;
-  background-color: #79438c; /* Color de fondo principal, similar al Statistics-container */
+  background-color: #79438c; 
   color: white;
   padding: 0.8rem 2rem;
   display: flex;
@@ -43,7 +42,7 @@
 /* Estilo para todos los botones/enlaces de navegación */
 .header-btn {
   background-color: transparent;
-  color: white;
+  color: white; 
   border: 1px solid transparent; 
   padding: 8px 15px;
   border-radius: 6px;
@@ -54,16 +53,16 @@
   white-space: nowrap; 
 }
 
-/* Efecto hover/activo para botones normales */
+/* EFECTO HOVER */
 .header-btn:hover {
-  background-color: #b582ce; /* Lila claro */
+  background-color: #b582ce; 
   border-color: #b582ce;
-  color: #fffdfd; /* Cambiar a color oscuro para mejor lectura sobre lila claro */
+  color: white;
 }
 
 /* Enlace/Botón activo */
 .active-link {
-  background-color: #a873c0 !important; /* Lila intermedio */
+  background-color: #a873c0 !important; 
   border-color: #a873c0 !important;
   font-weight: bold;
   color: white !important;
@@ -71,7 +70,7 @@
 
 /* Botón de Cerrar Sesión (Estilo único) */
 .signout-btn {
-  background-color: #d9534f; /* Rojo de delete */
+  background-color: #d9534f; 
   border: 1px solid #d9534f;
   font-weight: bold;
 }
@@ -79,6 +78,7 @@
 .signout-btn:hover {
   background-color: #c9302c;
   border-color: #c9302c;
+  color: white;
 }
 
 /* --- 2. Botón de Hamburguesa (Oculto en Desktop) --- */
@@ -156,9 +156,10 @@
     top: 55px;
     left: 0;
     width: 100%;
-    background-color: #6a1b9a; /* Púrpura más oscuro para el fondo del menú móvil */
+    /* CORRECCIÓN DE COLOR: Usar el color principal del header */
+    background-color: #79438c; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    padding: 0.5rem 0;
+    padding: 0; /* Quitamos padding vertical aquí, lo ponemos en los ítems */
     z-index: 999;
     align-items: flex-start;
   }
@@ -169,13 +170,17 @@
   }
 
   /* Estilo de lista para los enlaces/botones en móvil */
-  .header-buttons a,
-  .header-buttons button {
+  .header-buttons a {
     width: 100%;
-    padding: 10px 20px;
+    /* CORRECCIÓN: Quitamos el padding horizontal del 'a' */
+    padding: 0; 
     box-sizing: border-box;
-    text-align: left;
-    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Separador más visible */
+    
+  }
+
+  .header-buttons a:last-child {
+      border-bottom: none;
   }
   
   /* Asegurar que los botones ocupen todo el ancho y se vean como una lista */
@@ -184,24 +189,16 @@
     background-color: transparent; 
     border: none;
     font-size: 1rem;
-    padding: 10px 0; 
+    padding: 15px 20px; /* Padding interno del botón para el área de clic */
     width: 100%;
     text-align: left;
-    margin-left: -5px;
+    margin: 0; /* Asegurar que no haya márgenes extraños */
   }
 
-  .header-buttons a {
-     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .header-buttons a:last-child {
-      border-bottom: none;
-  }
-  
   /* Efectos hover/activo en móvil */
   .header-buttons a:hover,
   .header-buttons a button:hover {
-      background-color: #79438c; /* Color del header como hover en móvil */
+      background-color: #6a1b9a; /* Color ligeramente más oscuro para el hover */
       border: none;
       color: white;
   }
@@ -212,11 +209,12 @@
   
   /* Estilo especial para el botón de salir en móvil */
   .header-buttons .signout-btn {
-    margin-top: 5px;
+    /* Mantenemos un estilo más de botón al final de la lista */
+    margin: 15px 20px;
     background-color: #d9534f !important; 
     border-radius: 6px;
     text-align: center;
     width: calc(100% - 40px);
-    margin-left: 20px;
+    padding: 10px;
   }
 }

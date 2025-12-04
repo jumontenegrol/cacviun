@@ -9,7 +9,7 @@ import {
   LineChart, Line,
   AreaChart, Area
 } from "recharts";
-import "./../styles/StatisticsCharts.css";
+import "./../styles/Dashboard.css";
 import "./../styles/Report.css";
 
 function Statistics() {
