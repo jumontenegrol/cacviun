@@ -4,6 +4,22 @@ import "react-toastify/dist/ReactToastify.css";
 import "./../styles/Report.css";
 import Header from "../components/Header";
 import { useSessionStore } from "./../session/sessionStore.ts";
+import mapData from "./../assets/map.json";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
+} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import * as turf from "@turf/turf";
+const customIcon = new L.Icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+});
 
 const violenceTypes = [
   "Physical Violence",
@@ -27,6 +43,16 @@ function Report() {
 
   // Estado para mostrar u ocultar la ventana emergente
   const [showConfirm, setShowConfirm] = useState(false);
+
+  // Map / location state
+  const [position, setPosition] = useState(null);
+  const [zone, setZone] = useState(null);
+  const zoneRef = React.useRef(null);
+  const [error, setError] = useState("");
+
+  // Latitude / longitude stored as strings
+  const [latitudStr, setLatitudStr] = useState("");
+  const [longitudStr, setLongitudStr] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -77,9 +103,11 @@ function Report() {
         age: age,
         type: type,
         description: description,
-        location: {latitud: "321312", longitud: "32131232"},
+        location: { latitud: latitudStr, longitud: longitudStr },
         sendTime: new Date().toLocaleString("sv-SE"),
       };
+
+      console.log(body);
 
       const res = await fetch(`${path}/report/save-report`,{
         method: "POST",
@@ -129,6 +157,48 @@ function Report() {
     setType("");
     setDescription("");
   }
+
+  const ClickMarker = () => {
+    useMapEvents({
+      click(e) {
+        const { lat, lng } = e.latlng;
+        let foundZone = null;
+
+        for (const feature of mapData.features) {
+          if (turf.booleanPointInPolygon(turf.point([lng, lat]), feature)) {
+            foundZone = Number(feature.properties.Id);
+            break;
+          }
+        }
+
+        if (foundZone) {
+          setPosition(e.latlng);
+          setZone(foundZone);
+          zoneRef.current = foundZone;
+          setError("");
+          // Store lat/lng as strings
+          setLatitudStr(String(lat));
+          setLongitudStr(String(lng));
+        } else {
+          setError("Please click inside a valid area.");
+          setPosition(null);
+          setZone(null);
+          zoneRef.current = null;
+          setLatitudStr("");
+          setLongitudStr("");
+        }
+      },
+    });
+
+    return position ? (
+      <Marker position={position} icon={customIcon}>
+        <Popup>
+          Selected location
+          {zone && <div>Zone: {zone}</div>}
+        </Popup>
+      </Marker>
+    ) : null;
+  };
 
   const confirmationModal = (
     <div className="modal-background">
@@ -232,23 +302,28 @@ function Report() {
           </div>
 
           <div className="form-group">
-            <label>SELECT THE AREA WHERE THE EVENT OCCURRED</label>
-            <div
-              style={{
-                height: "400px",
-                width: "100%",
-                background: "#e5e5e5",
-                borderRadius: "8px",
-                border: "2px dashed gray",
-                marginTop: "0.5rem",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "#555",
-                fontStyle: "italic",
-              }}
-            >
-              🔲 Map frame (empty)
+            <label htmlFor="map-area">
+              PLEASE SELECT THE AREA ON THE MAP WHERE THE EVENTS OCCURRED.
+            </label>
+            <div style={{ height: "400px", width: "100%", marginTop: "1rem" }}>
+              <MapContainer
+                center={[4.638193, -74.084046]}
+                zoom={17}
+                minZoom={16}
+                maxZoom={18}
+                maxBounds={[
+                  [4.6315, -74.0935],
+                  [4.6445, -74.077],
+                ]}
+                maxBoundsViscosity={1.0}
+                style={{ height: "100%", width: "100%" }}
+              >
+                <TileLayer
+                  attribution="&copy; OpenStreetMap"
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <ClickMarker />
+              </MapContainer>
             </div>
           </div>
 
