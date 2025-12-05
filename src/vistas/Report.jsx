@@ -4,7 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "./../styles/Report.css";
 import Header from "../components/Header";
 import { useSessionStore } from "./../session/sessionStore.ts";
-import mapData from "./../assets/map.json";
 import {
   MapContainer,
   TileLayer,
@@ -162,31 +161,11 @@ function Report() {
     useMapEvents({
       click(e) {
         const { lat, lng } = e.latlng;
-        let foundZone = null;
-
-        for (const feature of mapData.features) {
-          if (turf.booleanPointInPolygon(turf.point([lng, lat]), feature)) {
-            foundZone = Number(feature.properties.Id);
-            break;
-          }
-        }
-
-        if (foundZone) {
-          setPosition(e.latlng);
-          setZone(foundZone);
-          zoneRef.current = foundZone;
-          setError("");
-          // Store lat/lng as strings
-          setLatitudStr(String(lat));
-          setLongitudStr(String(lng));
-        } else {
-          setError("Please click inside a valid area.");
-          setPosition(null);
-          setZone(null);
-          zoneRef.current = null;
-          setLatitudStr("");
-          setLongitudStr("");
-        }
+        
+        setPosition(e.latlng);
+        // Store lat/lng as strings
+        setLatitudStr(String(lat));
+        setLongitudStr(String(lng));
       },
     });
 
@@ -194,7 +173,6 @@ function Report() {
       <Marker position={position} icon={customIcon}>
         <Popup>
           Selected location
-          {zone && <div>Zone: {zone}</div>}
         </Popup>
       </Marker>
     ) : null;
