@@ -61,7 +61,7 @@ function Statistics() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(`${path}/report/admin-history`);
+      const res = await fetch(`${path}/dashboard/get-data`);
       if (!res.ok) return console.error("Error fetching statistics");
 
       const data = await res.json();
