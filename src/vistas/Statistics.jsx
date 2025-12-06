@@ -9,11 +9,54 @@ import {
   LineChart, Line,
   AreaChart, Area
 } from "recharts";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet.heat";
 import "./../styles/Dashboard.css";
 import "./../styles/Report.css";
 
+const customIcon = new L.Icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+});
+
+// HeatmapLayer component to display heat map
+function HeatmapLayer({ points }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!points.length) return;
+
+    // Remove existing heat layers
+    map.eachLayer((layer) => {
+      if (layer.options && layer.options.radius === 25) {
+        map.removeLayer(layer);
+      }
+    });
+
+    const heat = L.heatLayer(points, { radius: 25, blur: 15, maxZoom: 18 });
+    heat.addTo(map);
+
+    return () => {
+      map.removeLayer(heat);
+    };
+  }, [points, map]);
+
+  return null;
+}
+
 function Statistics() {
   const [incidentes, setIncidentes] = useState([]);
+  const [ubicaciones, setUbicaciones] = useState([]);
+  const [recentReports, setRecentReports] = useState([]);
   const path = "https://cacviun-backend.onrender.com";
 
   const fetchData = async () => {
@@ -27,8 +70,38 @@ function Statistics() {
       console.error("Server error", error);
     }
   };
+  
+  const fetchMapData = async () => {
+    try {
+      const res = await fetch(`${path}/dashboard/get-locations`);
+      if (!res.ok) return console.error("Error fetching map locations");
 
-  useEffect(() => { fetchData(); }, []);
+      const data = await res.json();
+      console.log("Locations data:", data.data);
+      setUbicaciones(data.data || []);
+    } catch (error) {
+      console.error("Server error", error);
+    }
+  };
+
+  const fetchRecentViolence = async () => {
+    try {
+      const res = await fetch(`${path}/dashboard/recent-violence`);
+      if (!res.ok) return console.error("Error fetching recent violence reports");
+
+      const data = await res.json();
+      console.log("Recent reports data:", data.data);
+      setRecentReports(data.data || []);
+    } catch (error) {
+      console.error("Server error", error);
+    }
+  };
+
+  useEffect(() => { 
+    fetchData();
+    fetchMapData();
+    fetchRecentViolence();
+  }, []);
 
   /* ----------------------------------------------------
         1. CATEGORY PIE CHART
@@ -98,6 +171,20 @@ function Statistics() {
 
   const categoryKeys = Object.keys(categoryCount);
 
+  // Prepare heatmap points from ubicaciones (all data)
+  const heatPoints = ubicaciones
+    .map((u) => [Number(u.latitud), Number(u.longitud)])
+    .filter((p) => Number.isFinite(p[0]) && Number.isFinite(p[1]));
+
+  // Recent reports (max 20) for markers with lat/long
+  const recentMarkers = recentReports
+    .map((r) => ({
+      ...r,
+      latitudNum: Number(r.latitud),
+      longitudNum: Number(r.longitud),
+    }))
+    .filter((r) => Number.isFinite(r.latitudNum) && Number.isFinite(r.longitudNum));
+
   /* ----------------------------------------------------
         5. NEW: CATEGORY OVER MONTHS (Area Chart)
   ---------------------------------------------------- */
@@ -151,22 +238,38 @@ function Statistics() {
         </p>
         
         {/* FRAME DEL MAPA */}
-        <div
-          style={{
-            height: "400px",
-            width: "100%",
-            backgroundColor: "#f2f2f2",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            color: "#999",
-            fontSize: "1rem",
-            fontWeight: "bold",
-          }}
-        >
-          MAP FRAME
+        <div style={{ height: "400px", width: "100%" }}>
+          <MapContainer
+            center={[4.638193, -74.084046]}
+            zoom={17}
+            minZoom={16}
+            maxZoom={18}
+            maxBounds={[
+              [4.6315, -74.0935],
+              [4.6445, -74.077],
+            ]}
+            maxBoundsViscosity={1.0}
+            style={{ height: "100%", width: "100%" }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <HeatmapLayer points={heatPoints} />
+            {recentMarkers.map((reporte, idx) => (
+              <Marker
+                key={idx}
+                position={[reporte.latitudNum, reporte.longitudNum]}
+                icon={customIcon}
+              >
+                <Popup>
+                  <strong>Date:</strong> {reporte.date}
+                  <br />
+                  <strong>Type:</strong> {reporte.categoryLabel || reporte.category}
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
         </div>
 
         <h1 className="form-title" style={{ textAlign: "center" }}>STATISTICS</h1>
