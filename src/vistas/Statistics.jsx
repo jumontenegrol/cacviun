@@ -31,23 +31,26 @@ const customIcon = new L.Icon({
 // HeatmapLayer component to display heat map
 function HeatmapLayer({ points }) {
   const map = useMap();
+  const heatLayerRef = React.useRef(null);
+  const prevPointsRef = React.useRef(null);
 
   useEffect(() => {
-    if (!points.length) return;
+    // Create the heat layer only once
+    if (!heatLayerRef.current) {
+      heatLayerRef.current = L.heatLayer(points, {
+        radius: 25,
+        blur: 15,
+        maxZoom: 18,
+      }).addTo(map);
+      prevPointsRef.current = points;
+      return;
+    }
 
-    // Remove existing heat layers
-    map.eachLayer((layer) => {
-      if (layer.options && layer.options.radius === 25) {
-        map.removeLayer(layer);
-      }
-    });
-
-    const heat = L.heatLayer(points, { radius: 25, blur: 15, maxZoom: 18 });
-    heat.addTo(map);
-
-    return () => {
-      map.removeLayer(heat);
-    };
+    // Only update if points actually changed (by reference or content)
+    if (prevPointsRef.current !== points && JSON.stringify(prevPointsRef.current) !== JSON.stringify(points)) {
+      heatLayerRef.current.setLatLngs(points);
+      prevPointsRef.current = points;
+    }
   }, [points, map]);
 
   return null;
@@ -57,6 +60,8 @@ function Statistics() {
   const [incidentes, setIncidentes] = useState([]);
   const [ubicaciones, setUbicaciones] = useState([]);
   const [recentReports, setRecentReports] = useState([]);
+  const [heatPoints, setHeatPoints] = useState([]);
+  const [recentMarkers, setRecentMarkers] = useState([]);
   const path = "https://cacviun-backend.onrender.com";
 
   const fetchData = async () => {
@@ -102,6 +107,25 @@ function Statistics() {
     fetchMapData();
     fetchRecentViolence();
   }, []);
+
+  // Update heatPoints and recentMarkers only when ubicaciones or recentReports change
+  useEffect(() => {
+    const points = ubicaciones
+      .map((u) => [Number(u.latitud), Number(u.longitud)])
+      .filter((p) => Number.isFinite(p[0]) && Number.isFinite(p[1]));
+    setHeatPoints(points);
+  }, [ubicaciones]);
+
+  useEffect(() => {
+    const markers = recentReports
+      .map((r) => ({
+        ...r,
+        latitudNum: Number(r.latitud),
+        longitudNum: Number(r.longitud),
+      }))
+      .filter((r) => Number.isFinite(r.latitudNum) && Number.isFinite(r.longitudNum));
+    setRecentMarkers(markers);
+  }, [recentReports]);
 
   /* ----------------------------------------------------
         1. CATEGORY PIE CHART
@@ -171,19 +195,7 @@ function Statistics() {
 
   const categoryKeys = Object.keys(categoryCount);
 
-  // Prepare heatmap points from ubicaciones (all data)
-  const heatPoints = ubicaciones
-    .map((u) => [Number(u.latitud), Number(u.longitud)])
-    .filter((p) => Number.isFinite(p[0]) && Number.isFinite(p[1]));
-
-  // Recent reports (max 20) for markers with lat/long
-  const recentMarkers = recentReports
-    .map((r) => ({
-      ...r,
-      latitudNum: Number(r.latitud),
-      longitudNum: Number(r.longitud),
-    }))
-    .filter((r) => Number.isFinite(r.latitudNum) && Number.isFinite(r.longitudNum));
+  // Heatmap points and markers are now managed by state to prevent recalculation on every render
 
   /* ----------------------------------------------------
         5. NEW: CATEGORY OVER MONTHS (Area Chart)
@@ -238,17 +250,22 @@ function Statistics() {
         </p>
         
         {/* FRAME DEL MAPA */}
-        <div style={{ height: "400px", width: "100%" }}>
+        <div style={{ height: "600px", width: "100%" }}>
           <MapContainer
             center={[4.638193, -74.084046]}
-            zoom={17}
+            zoom={16}
             minZoom={16}
-            maxZoom={18}
+            maxZoom={16}
             maxBounds={[
-              [4.6315, -74.0935],
-              [4.6445, -74.077],
+              [4.6325, -74.0875],
+              [4.6440, -74.0805],
             ]}
             maxBoundsViscosity={1.0}
+            dragging={false}
+            zoomControl={false}
+            scrollWheelZoom={false}
+            doubleClickZoom={false}
+            touchZoom={false}
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer
