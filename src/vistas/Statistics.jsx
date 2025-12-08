@@ -304,7 +304,7 @@ function Statistics() {
         </div>
       </div>
 
-        <h1 className="form-title" style={{ color: "black",textAlign: "center",  marginBottom: "2rem" }}>STATISTICS</h1>
+        <h1 className="form-title" style={{ color: "black",textAlign: "center",  marginBottom: "2rem" }}>Statistics</h1>
 
         <div className="statistics-view">
           <div className="statistics-charts-container">
