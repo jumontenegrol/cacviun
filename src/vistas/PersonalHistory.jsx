@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import DeleteConfirm from "../components/DeleteReport.jsx";
 import EditReport from "../components/EditReport.jsx";
 import { useSessionStore } from "../session/sessionStore.ts";
+import Hero from "../components/Hero"
 
 // Listas de opciones (deben estar fuera del componente o definidas dentro)
 const violenceTypes = [
@@ -480,13 +481,6 @@ function PersonalHistory() {
           </p>
         )}
 
-        <p
-          className="form-subtitle"
-          style={{ textAlign: "center", fontSize: "0.6rem" }}
-        >
-          🟣 This color symbolizes our dedication to eliminating all forms of
-          violence.
-        </p>
       </div>
 
       <ToastContainer />
@@ -506,6 +500,7 @@ function PersonalHistory() {
           onSave={saveEditedReport}
         />
       )}
+        <Hero />
     </div>
   );
 }

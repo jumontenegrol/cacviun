@@ -13,10 +13,11 @@ body {
    CONTENEDOR PRINCIPAL
 --------------------------------------------------- */
 .report-container {
-  background-color: #79438c;
+  background-color: #eee2f8;
   min-height: 100vh;
   width: 100%;   
   display: flex;
+
   flex-direction: column;
   align-items: stretch;
   color: white;
@@ -50,7 +51,7 @@ body {
   font-weight: 900;
   font-size: 2rem;
   letter-spacing: 1px;
-  text-transform: uppercase;
+
   color: white;
 
   /* glow sutil */
@@ -63,20 +64,15 @@ body {
 }
 
 .header-btn {
-  background-color: #6a2a82;
+  background-color: transparent;
   color: white;
   border: none;
-  padding: 0.75rem 1.6rem;
+  padding: 0.75rem ;
   border-radius: 6px;
-  text-transform: uppercase;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 500;
   transition: 0.25s ease-in-out;
-  letter-spacing: 0.5px;
-  font-size: 0.9rem;
-
-  /* sombra profesional */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  font-size: 1rem;
 }
 
 .header-btn:disabled {
@@ -87,39 +83,32 @@ body {
 }
 
 .header-btn:not(:disabled):hover {
-  background-color: #5d2472;
+    color: #bfbfbf;
   transform: translateY(-3px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
 }
 
 /* ---------------------------------------------------
    FORMULARIO PRINCIPAL
 --------------------------------------------------- */
 .report-content {
-  background-color: #9d6baa;
-  margin: 2.5rem 0;
-  padding: 2.8rem 3.4rem;
-  border-radius: 18px;
-
-  width: 100%;
-  max-width: none;
-
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-
-  /* Sombras premium */
-  box-shadow: 0 12px 30px rgba(0,0,0,0.28),
-              0 3px 8px rgba(255,255,255,0.2) inset;
-  transition: 0.3s;
+    background-image: url("../assets/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #272727;
+    position: relative;
+    margin: 2.5rem 0;
+    padding: 2.8rem clamp(0.8rem, 12vw, 18rem);
+    width: 100%;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    transition: 0.3s;
 }
 
 /* animación suave al pasar el mouse */
-.report-content:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 38px rgba(0,0,0,0.33),
-              0 4px 10px rgba(255,255,255,0.25) inset;
-}
+
 
 .form-title {
   font-size: 2.4rem;
@@ -127,11 +116,11 @@ body {
   margin: 0;
   font-weight: 800;
   letter-spacing: 0.5px;
-  text-shadow: 0 0 6px rgba(0,0,0,0.25);
 }
 
 .form-subtitle {
-  font-size: 1rem;
+
+  font-size: 2rem;
   text-align: center;
   opacity: 0.9;
 }
@@ -148,7 +137,7 @@ body {
 .report-form-single-column label {
   font-size: 0.95rem;
   font-weight: bold;
-  text-transform: uppercase;
+
   letter-spacing: 0.6px;
 }
 
@@ -189,7 +178,6 @@ textarea {
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  text-transform: uppercase;
   letter-spacing: 1px;
   transition: 0.25s ease-in-out;
   align-self: center;

@@ -1,12 +1,12 @@
 body {
   margin: 0;
-  font-family: Arial;
+
   overflow-y: scroll;
 }
 
 /* --- Fondo general --- */
 .Statistics-container {
-  background-color: #79438c;
+  background-color: #ede1f7;
   min-height: 100vh;
 
   display: flex;
@@ -18,10 +18,12 @@ body {
 
 /* --- Contenido central (EXPANDIDO PARA OCUPAR TODO EL ANCHO) --- */
 .Statistics-content {
-  background-color: #9d6baa;
+    background-image: url("./../assets/background.jpg");
+    background-size: cover;
+    background-position: center;
   /* Cambio: Usar todo el ancho disponible */
   margin: 2rem 1rem;
-  padding: 2.5rem 3rem;
+  padding: 2.5rem clamp(3rem, 12vw, 18rem);
   border-radius: 10px;
 
   width: calc(100% - 2rem);
@@ -155,7 +157,7 @@ body {
 
 .pagination-info {
   font-size: 0.9rem;
-  color: #333; /* Usamos un color oscuro porque es texto que suele ir fuera del content púrpura */
+  color: #ffffff; /* Usamos un color oscuro porque es texto que suele ir fuera del content púrpura */
 }
 
 /* ========================================== */

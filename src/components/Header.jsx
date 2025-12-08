@@ -1,7 +1,8 @@
 import React, { useState } from 'react'; 
 import { Link, useNavigate, useLocation } from "react-router-dom"; 
 import { useSessionStore } from "./../session/sessionStore.ts";
-import './../styles/Header.css'; 
+import './../styles/Header.css';
+import Logo from './Logo.jsx';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -35,12 +36,8 @@ const Header = () => {
 
   return (
     <header className="main-header go-front">
-      <div className="logo-wrapper">
-        <Link to="/" className="logo">
-          CACVi-UN
-        </Link>
-      </div>
-      
+      <Logo />
+
       {isLogged && (
         <button className="menu-toggle" onClick={toggleMenu}>
           <div className={`hamburger ${isMenuOpen ? 'open' : ''}`}></div>
@@ -58,7 +55,7 @@ const Header = () => {
         {!isValidator && (
           <>
             <Link to="/report" onClick={closeMenu}>
-              <button className={getNavLinkClass('/report')}>Make a report</button>
+              <button className={getNavLinkClass('/report')}>Make a Report</button>
             </Link>
 
             <Link to="/personalHistory" onClick={closeMenu}>
@@ -87,7 +84,7 @@ const Header = () => {
         
 
         {isLogged && (
-          <button className="header-btn signout-btn" onClick={handleSignOut}>
+          <button className="signout-btn" onClick={handleSignOut}>
             Sign Out
           </button>
         )}

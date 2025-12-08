@@ -4,6 +4,7 @@ import "./../styles/Statistics.css";
 import { ToastContainer, toast } from "react-toastify";
 import DeleteConfirm from "../components/DeleteReport";
 import EditReport from "../components/EditReport";
+import Hero from "../components/Hero";
 
 function extractId(report) {
   if (!report) return null;
@@ -334,14 +335,15 @@ function AdminHistory() {
           className="Statistics-form-title"
           style={{ textAlign: "center", padding: "0.1rem" }}
         >
-          HISTORIAL FOR ADMIN
+          Historial for Admin
         </h1>
 
         <p
           className="Statistics-form-subtitle"
-          style={{ textAlign: "center", fontSize: "0.9rem", padding: "0.3rem" }}
+          style={{ textAlign: "center", fontSize: "1rem", padding: "0.3rem" }}
         >
-          IN THIS SPACE YOU CAN SEE REPORTS MADE BY ALL USERS
+          In this space you can see Reports made by all users on campus. You can filter as you need.
+
         </p>
 
         {/* ========================================== */}
@@ -511,13 +513,7 @@ function AdminHistory() {
           </p>
         )}
 
-        <p
-          className="form-subtitle"
-          style={{ textAlign: "center", fontSize: "0.6rem" }}
-        >
-          🟣 This color symbolizes our dedication to eliminating all forms of
-          violence.
-        </p>
+
       </div>
 
       <ToastContainer />
@@ -537,6 +533,7 @@ function AdminHistory() {
           onSave={saveEditedReport}
         />
       )}
+        <Hero/>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
+import Hero from "../components/Hero";
 import {
   ResponsiveContainer,
   PieChart, Pie,
@@ -21,6 +22,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.heat";
 import "./../styles/Dashboard.css";
 import "./../styles/Report.css";
+
 
 const customIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
@@ -235,22 +237,22 @@ function Statistics() {
           className="form-title"
           style={{ textAlign: "center", padding: "0.1rem" }}
         >
-          MAP
+          Map of recent violence reports
         </h1>
 
         <p
           className="form-subtitle"
           style={{
             textAlign: "center",
-            fontSize: "0.8rem",
+            fontSize: "1.2rem",
             padding: "0.3rem",
           }}
         >
-          HERE YOU WILL SEE THE AREAS WITH THE MOST RECORDED CASES
+          These are the areas with the most cases
         </p>
         
         {/* FRAME DEL MAPA */}
-        <div style={{ height: "600px", width: "100%" }}>
+        <div style={{ height: "600px", width: "100%"}}>
           <MapContainer
             center={[4.638193, -74.084046]}
             zoom={16}
@@ -288,8 +290,9 @@ function Statistics() {
             ))}
           </MapContainer>
         </div>
+      </div>
 
-        <h1 className="form-title" style={{ textAlign: "center" }}>STATISTICS</h1>
+        <h1 className="form-title" style={{ color: "black",textAlign: "center",  marginBottom: "2rem" }}>STATISTICS</h1>
 
         <div className="statistics-view">
           <div className="statistics-charts-container">
@@ -363,14 +366,7 @@ function Statistics() {
 
           </div>
         </div>
-         <p
-          className="form-subtitle"
-          style={{ textAlign: "center", fontSize: "0.6rem" }}
-        >
-          🟣 This color symbolizes our dedication to eliminating all forms of
-          violence.
-        </p>
-      </div>     
+        <Hero />
     </div>
   );
 }

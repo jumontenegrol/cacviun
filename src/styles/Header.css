@@ -8,7 +8,7 @@
 /* --- 1. Estilos Base y Desktop --- */
 .main-header {
   width: 100%;
-  background-color: #79438c; 
+  background-color: #79438c;
   color: white;
   padding: 0.8rem 2rem;
   display: flex;
@@ -42,11 +42,11 @@
 /* Estilo para todos los botones/enlaces de navegación */
 .header-btn {
   background-color: transparent;
-  color: white; 
-  border: 1px solid transparent; 
+  color: white;
+  border: 1px solid transparent;
   padding: 8px 15px;
-  border-radius: 6px;
-  font-weight: 500;
+  border-radius: 10px;
+  font-weight: 700;
   cursor: pointer;
   text-decoration: none;
   transition: background-color 0.2s ease, border-color 0.2s ease;
@@ -55,14 +55,13 @@
 
 /* EFECTO HOVER */
 .header-btn:hover {
-  background-color: #b582ce; 
-  border-color: #b582ce;
+
   color: white; /* Mantenemos el blanco */
 }
 
 /* Enlace/Botón activo */
 .active-link {
-  background-color: #a873c0 !important; 
+  background-color: #5c157a !important;
   border-color: #a873c0 !important;
   font-weight: bold;
   color: white !important;
@@ -70,9 +69,16 @@
 
 /* Botón de Cerrar Sesión (Estilo único) */
 .signout-btn {
-  background-color: #d9534f; 
-  border: 1px solid #d9534f;
-  font-weight: bold;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #d7bcde;
+    padding: 0.75rem 15px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
 }
 
 .signout-btn:hover {

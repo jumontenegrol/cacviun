@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./../styles/App.css";
 import ConfirmCode from "../components/ConfirmCode";
+import Logo from "../components/Logo";
 
 function ForgotPassword() {
   const path = "https://cacviun-backend.onrender.com";
@@ -125,7 +126,7 @@ function ForgotPassword() {
 
   return (
     <div className="background">
-      <div className="header">CACVi-UN</div>
+      <div className="header"><Logo /></div>
 
       <div className="login-box">
         <h1>Recover Password</h1>

@@ -3,6 +3,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./../styles/Report.css";
 import Header from "../components/Header";
+import Hero from "../components/Hero";
 import { useSessionStore } from "./../session/sessionStore.ts";
 import {
   MapContainer,
@@ -210,7 +211,7 @@ function Report() {
         <form onSubmit={handleSubmit} className="report-form-single-column">
 
           <div className="form-group">
-            <label htmlFor="name">NAME AND LAST NAME</label>
+            <label htmlFor="name">Name and Last Name</label>
             <input
               type="text"
               id="name"
@@ -221,7 +222,7 @@ function Report() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">EMAIL</label>
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
@@ -232,7 +233,7 @@ function Report() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="age">AGE</label>
+            <label htmlFor="age">Age</label>
             <input
               type="number"
               id="age"
@@ -243,7 +244,7 @@ function Report() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="date">DATE OF EVENT</label>
+            <label htmlFor="date">Date of Event</label>
             <input
               type="date"
               id="date"
@@ -253,7 +254,7 @@ function Report() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="type">TYPE OF VIOLENCE</label>
+            <label htmlFor="type">Type of Violence</label>
             <select
               id="type"
               value={type}
@@ -270,7 +271,7 @@ function Report() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="description">PLEASE DESCRIBE THE EVENT</label>
+            <label htmlFor="description">Please describe the event</label>
             <textarea
               id="description"
               placeholder="Describe the event (optional)"
@@ -281,7 +282,7 @@ function Report() {
 
           <div className="form-group">
             <label htmlFor="map-area">
-              PLEASE SELECT THE AREA ON THE MAP WHERE THE EVENTS OCCURRED.
+              Please select the are on the map where the events occurred.
             </label>
             <div style={{ height: "400px", width: "100%", marginTop: "1rem" }}>
               <MapContainer
@@ -306,19 +307,12 @@ function Report() {
           </div>
 
           <button type="submit" className="submit-btn">
-            SEND THE REPORT
+            Send the Report
           </button>
         </form>
 
-        <p
-          className="form-subtitle"
-          style={{ textAlign: "center", fontSize: "0.6rem" }}
-        >
-          🟣 This color symbolizes our dedication to eliminating all forms of
-          violence.
-        </p>
       </div>
-
+        <Hero />
       <ToastContainer />
     </div>
   );

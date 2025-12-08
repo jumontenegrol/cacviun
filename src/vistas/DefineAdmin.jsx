@@ -3,6 +3,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./../styles/Report.css";
 import Header from "../components/Header";
+import Hero from "../components/Hero";
 
 function Report() {
   const path = "https://cacviun-backend.onrender.com";
@@ -105,8 +106,9 @@ function Report() {
         </form>
 
       </div>
+        <Hero />
+        <ToastContainer />
 
-      <ToastContainer />
     </div>
   );
 }

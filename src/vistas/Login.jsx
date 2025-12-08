@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useSessionStore } from "./../session/sessionStore.ts";
 import "react-toastify/dist/ReactToastify.css";
 import "./../styles/App.css";
+import Logo from "../components/Logo.jsx";
 
 function Login() {
   const path = "https://cacviun-backend.onrender.com";
@@ -89,10 +90,13 @@ function Login() {
   };
 
   return (
-    <div className="background">
-      <div className="header">CACVi-UN</div>
+    <div className="background" >
+        <div className="header">
+            <Logo />
+        </div>
 
-      <div className="login-box">
+
+        <div className="login-box">
         <h1>Login</h1>
         <p>Sign in to continue....</p>
 
