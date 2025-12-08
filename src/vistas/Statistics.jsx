@@ -64,7 +64,19 @@ function Statistics() {
   const [recentReports, setRecentReports] = useState([]);
   const [heatPoints, setHeatPoints] = useState([]);
   const [recentMarkers, setRecentMarkers] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
   const path = "https://cacviun-backend.onrender.com";
+
+  // Detect if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -263,11 +275,11 @@ function Statistics() {
               [4.6440, -74.0805],
             ]}
             maxBoundsViscosity={1.0}
-            dragging={false}
-            zoomControl={false}
-            scrollWheelZoom={false}
-            doubleClickZoom={false}
-            touchZoom={false}
+            dragging={isMobile}
+            zoomControl={isMobile}
+            scrollWheelZoom={isMobile}
+            doubleClickZoom={isMobile}
+            touchZoom={isMobile}
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer
