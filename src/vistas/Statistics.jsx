@@ -425,9 +425,14 @@ function Statistics() {
               Shows the five most frequently reported categories of violence on campus
             </p>
             <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={top5Categories} layout="vertical" margin={{ left: 100 }}>
+              <BarChart data={top5Categories} layout="vertical" margin={{ left: 20, right: 20 }}>
                 <XAxis type="number" />
-                <YAxis type="category" dataKey="category" width={120} />
+                <YAxis 
+                  type="category" 
+                  dataKey="category" 
+                  width={isMobile ? 90 : 120}
+                  tick={{ fontSize: isMobile ? 11 : 14 }}
+                />
                 <Tooltip 
                   formatter={(value, name, props) => [
                     `${value} reports (${props.payload.percentage}%)`, 
@@ -450,9 +455,14 @@ function Statistics() {
               Identifies the campus areas where most violence cases have been reported
             </p>
             <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={top5Locations} layout="vertical" margin={{ left: 100 }}>
+              <BarChart data={top5Locations} layout="vertical" margin={{ left: 20, right: 20 }}>
                 <XAxis type="number" />
-                <YAxis type="category" dataKey="location" width={120} />
+                <YAxis 
+                  type="category" 
+                  dataKey="location" 
+                  width={isMobile ? 90 : 120}
+                  tick={{ fontSize: isMobile ? 11 : 14 }}
+                />
                 <Tooltip formatter={(value) => [`${value} reports`, 'Total']} />
                 <Bar dataKey="count" fill="#10b981" radius={[0, 8, 8, 0]} />
               </BarChart>
