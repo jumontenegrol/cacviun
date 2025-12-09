@@ -3,12 +3,11 @@ import Header from "../components/Header";
 import Hero from "../components/Hero";
 import {
   ResponsiveContainer,
-  PieChart, Pie,
-  Tooltip,
   BarChart, Bar,
   XAxis, YAxis,
   LineChart, Line,
-  AreaChart, Area
+  Tooltip,
+  Cell
 } from "recharts";
 import {
   MapContainer,
@@ -22,7 +21,6 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.heat";
 import "./../styles/Dashboard.css";
 import "./../styles/Report.css";
-
 
 const customIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
@@ -142,26 +140,99 @@ function Statistics() {
   }, [recentReports]);
 
   /* ----------------------------------------------------
-        1. CATEGORY PIE CHART
+        1. TOP 5 MOST COMMON TYPES OF VIOLENCE
   ---------------------------------------------------- */
   const categoryCount = incidentes.reduce((acc, inc) => {
-    acc[inc.category] = (acc[inc.category] || 0) + 1;
+    const category = inc.category || 'Not specified';
+    acc[category] = (acc[category] || 0) + 1;
     return acc;
   }, {});
 
-  const categoryData = Object.entries(categoryCount).map(([category, value]) => ({
-    category,
-    value,
-  }));
+  const top5Categories = Object.entries(categoryCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([category, count]) => ({
+      category,
+      count,
+      percentage: ((count / incidentes.length) * 100).toFixed(1)
+    }));
 
   /* ----------------------------------------------------
-        2. AGE RANGE BAR CHART
+        2. MOST COMMON LOCATIONS (TOP 5)
+  ---------------------------------------------------- */
+  const locationCount = incidentes.reduce((acc, inc) => {
+    // Use 'zone' field that comes mapped with location name from backend
+    const location = inc.zone || 'Not specified';
+    acc[location] = (acc[location] || 0) + 1;
+    return acc;
+  }, {});
+
+  const top5Locations = Object.entries(locationCount)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([location, count]) => ({
+      location,
+      count
+    }));
+
+  /* ----------------------------------------------------
+        3. MONTHLY TREND OF REPORTS (LAST YEAR)
+  ---------------------------------------------------- */
+  // Calculate date from 12 months ago
+  const today = new Date();
+  const oneYearAgo = new Date(today);
+  oneYearAgo.setFullYear(today.getFullYear() - 1);
+
+  // Filter incidents from last year
+  const lastYearIncidents = incidentes.filter(inc => {
+    const incDate = new Date(inc.date);
+    return incDate >= oneYearAgo && incDate <= today;
+  });
+
+  const monthlyCount = lastYearIncidents.reduce((acc, inc) => {
+    const month = inc.date.slice(0, 7); // YYYY-MM
+    acc[month] = (acc[month] || 0) + 1;
+    return acc;
+  }, {});
+
+  const monthlyTrend = Object.entries(monthlyCount)
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([month, count]) => {
+      // Convert YYYY-MM to more readable format
+      const [year, monthNum] = month.split('-');
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      return {
+        month: `${monthNames[parseInt(monthNum) - 1]} ${year.slice(2)}`,
+        count,
+        fullDate: month
+      };
+    });
+
+  /* ----------------------------------------------------
+        4. ANNUAL TREND (LAST 5-10 YEARS)
+  ---------------------------------------------------- */
+  const yearlyCount = incidentes.reduce((acc, inc) => {
+    const year = inc.date.slice(0, 4); // YYYY
+    acc[year] = (acc[year] || 0) + 1;
+    return acc;
+  }, {});
+
+  const yearlyTrend = Object.entries(yearlyCount)
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([year, count]) => ({
+      year,
+      count
+    }));
+
+  /* ----------------------------------------------------
+        5. MOST AFFECTED AGE RANGE
   ---------------------------------------------------- */
   function groupAge(age) {
-    if (age <= 20) return "15–20";
-    if (age <= 25) return "21–25";
-    if (age <= 30) return "26–30";
-    return "31+";
+    if (age <= 18) return "Under 18";
+    if (age <= 22) return "18-22 years";
+    if (age <= 26) return "23-26 years";
+    if (age <= 30) return "27-30 years";
+    return "Over 30";
   }
 
   const ageCount = incidentes.reduce((acc, inc) => {
@@ -170,75 +241,43 @@ function Statistics() {
     return acc;
   }, {});
 
-  const ageData = Object.entries(ageCount).map(([range, count]) => ({
-    range,
-    count,
-  }));
+  // Define correct order of age ranges
+  const ageOrder = ["Under 18", "18-22 years", "23-26 years", "27-30 years", "Over 30"];
+  
+  const ageData = ageOrder
+    .filter(range => ageCount[range] > 0) // Only include ranges with data
+    .map(range => ({
+      range,
+      count: ageCount[range]
+    }));
 
   /* ----------------------------------------------------
-        3. REPORTS OVER TIME (Line)
+        6. PEAK MONTH FOR REPORTS
   ---------------------------------------------------- */
-  const dateCount = incidentes.reduce((acc, inc) => {
-    const date = inc.date.split("T")[0];
-    acc[date] = (acc[date] || 0) + 1;
+  const monthlyCountAllTime = incidentes.reduce((acc, inc) => {
+    const monthNum = new Date(inc.date).getMonth(); // 0-11
+    acc[monthNum] = (acc[monthNum] || 0) + 1;
     return acc;
   }, {});
 
-  const dateData = Object.entries(dateCount).map(([date, count]) => ({
-    date,
-    count,
-  }));
+  // Find month with most historical reports
+  const peakMonth = Object.entries(monthlyCountAllTime)
+    .sort((a, b) => b[1] - a[1])[0];
+  
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                      'July', 'August', 'September', 'October', 'November', 'December'];
+  
+  const peakMonthName = peakMonth ? monthNames[parseInt(peakMonth[0])] : 'N/A';
 
   /* ----------------------------------------------------
-        4. NEW: CATEGORY vs AGE (Stacked Bars)
+        7. GENERAL SUMMARY
   ---------------------------------------------------- */
-  const stackedMap = {};
+  const totalReports = incidentes.length;
+  const mostCommonCategory = top5Categories[0]?.category || 'N/A';
+  const mostCommonLocation = top5Locations[0]?.location || 'N/A';
 
-  incidentes.forEach((inc) => {
-    const ageGroup = groupAge(inc.age);
-    const cat = inc.category;
-
-    if (!stackedMap[ageGroup]) stackedMap[ageGroup] = {};
-    stackedMap[ageGroup][cat] = (stackedMap[ageGroup][cat] || 0) + 1;
-  });
-
-  const stackedData = Object.entries(stackedMap).map(([ageGroup, cats]) => ({
-    ageGroup,
-    ...cats 
-  }));
-
-  const categoryKeys = Object.keys(categoryCount);
-
-  // Heatmap points and markers are now managed by state to prevent recalculation on every render
-
-  /* ----------------------------------------------------
-        5. NEW: CATEGORY OVER MONTHS (Area Chart)
-  ---------------------------------------------------- */
-  const monthlyMap = {};
-
-  incidentes.forEach((inc) => {
-    const month = inc.date.slice(0, 7); // YYYY-MM
-    const cat = inc.category;
-
-    if (!monthlyMap[month]) monthlyMap[month] = {};
-    monthlyMap[month][cat] = (monthlyMap[month][cat] || 0) + 1;
-  });
-
-  const monthlyData = Object.entries(monthlyMap).map(([month, cats]) => ({
-    month,
-    ...cats
-  }));
-
-  /* ----------------------------------------------------
-        6. NEW: HEATMAP SIMPLIFIED (Bar Grid)
-  ---------------------------------------------------- */
-  const heatMapData = Object.entries(stackedMap).flatMap(([ageGroup, cats]) =>
-    Object.entries(cats).map(([cat, value]) => ({
-      ageGroup,
-      category: cat,
-      value
-    }))
-  );
+  // Colores para las gráficas
+  const COLORS = ['#7a3aed', '#10b981', '#f59e0b', '#ef4444', '#3b82f6'];
 
   return (
     <div className="report-container">
@@ -264,7 +303,7 @@ function Statistics() {
         </p>
         
         {/* FRAME DEL MAPA */}
-        <div style={{ height: "600px", width: "100%"}}>
+        <div style={{ height: "600px", width: "100%" }}>
           <MapContainer
             center={[4.638193, -74.084046]}
             zoom={16}
@@ -304,81 +343,188 @@ function Statistics() {
         </div>
       </div>
 
-        <h1 className="form-title" style={{ color: "black",textAlign: "center",  marginBottom: "2rem" }}>Statistics</h1>
+      <h1 className="form-title" style={{ color: "black", textAlign: "center", marginTop: '3rem', marginBottom: "2rem" }}>Statistics</h1>
 
-        <div className="statistics-view">
-          <div className="statistics-charts-container">
-
-            {/* ===== 1 PIE ===== */}
-            <div className="chart-box">
-              <h2 className="chart-title">Distribution by Category</h2>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie data={categoryData} dataKey="value" nameKey="category" cx="50%" cy="50%" outerRadius={110} fill="#7a3aed" label />
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* ===== 2 AGE BAR ===== */}
-            <div className="chart-box">
-              <h2 className="chart-title">Reports by Age Group</h2>
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={ageData}>
-                  <XAxis dataKey="range" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="count" fill="#10b981" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* ===== 3 LINE OVER TIME ===== */}
-            <div className="chart-box">
-              <h2 className="chart-title">Reports Over Time</h2>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={dateData}>
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="count" stroke="#6366f1" strokeWidth={2} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* ===== 4 STACKED BAR ===== */}
-            <div className="chart-box">
-              <h2 className="chart-title">Category vs Age Range</h2>
-              <ResponsiveContainer width="100%" height={340}>
-                <BarChart data={stackedData}>
-                  <XAxis dataKey="ageGroup" />
-                  <YAxis />
-                  <Tooltip />
-                  {categoryKeys.map((cat, i) => (
-                    <Bar key={i} dataKey={cat} stackId="a" />
-                  ))}
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-
-            {/* ===== 5 AREA MONTHLY ===== */}
-            <div className="chart-box">
-              <h2 className="chart-title">Category Reports per Month</h2>
-              <ResponsiveContainer width="100%" height={320}>
-                <AreaChart data={monthlyData}>
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  {categoryKeys.map((cat, i) => (
-                    <Area key={i} type="monotone" dataKey={cat} fillOpacity={0.4} strokeWidth={2} />
-                  ))}
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-
-          </div>
+      {/* RESUMEN ESTADÍSTICO */}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(2, 1fr)', 
+        gap: '1rem', 
+        marginBottom: '2rem',
+        padding: '0 1rem'
+      }}>
+        <div style={{ 
+          background: 'linear-gradient(135deg, #7a3aed 0%, #9d5cff 100%)', 
+          padding: '1.5rem', 
+          borderRadius: '12px',
+          color: 'white',
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '120px'
+        }}>
+          <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{totalReports}</div>
+          <div style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Total Reports</div>
         </div>
-        <Hero />
+        <div style={{ 
+          background: 'linear-gradient(135deg, #10b981 0%, #34d399 100%)', 
+          padding: '1.5rem', 
+          borderRadius: '12px',
+          color: 'white',
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '120px'
+        }}>
+          <div style={{ fontSize: '1.1rem', fontWeight: 'bold', lineHeight: '1.3' }}>{mostCommonCategory}</div>
+          <div style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Most Common Type</div>
+        </div>
+        <div style={{ 
+          background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)', 
+          padding: '1.5rem', 
+          borderRadius: '12px',
+          color: 'white',
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '120px'
+        }}>
+          <div style={{ fontSize: '1.1rem', fontWeight: 'bold', lineHeight: '1.3' }}>{mostCommonLocation}</div>
+          <div style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Most Common Location</div>
+        </div>
+        <div style={{ 
+          background: 'linear-gradient(135deg, #ef4444 0%, #f87171 100%)', 
+          padding: '1.5rem', 
+          borderRadius: '12px',
+          color: 'white',
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '120px'
+        }}>
+          <div style={{ fontSize: '1.1rem', fontWeight: 'bold', lineHeight: '1.3' }}>{peakMonthName}</div>
+          <div style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>Peak Month</div>
+        </div>
+      </div>
+
+      <div className="statistics-view">
+        <div className="statistics-charts-container">
+
+          {/* ===== 1. TOP 5 TYPES OF VIOLENCE ===== */}
+          <div className="chart-box">
+            <h2 className="chart-title">Top 5 Most Reported Types of Violence</h2>
+            <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', textAlign: 'center' }}>
+              Shows the five most frequently reported categories of violence on campus
+            </p>
+            <ResponsiveContainer width="100%" height={350}>
+              <BarChart data={top5Categories} layout="vertical" margin={{ left: 100 }}>
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="category" width={120} />
+                <Tooltip 
+                  formatter={(value, name, props) => [
+                    `${value} reports (${props.payload.percentage}%)`, 
+                    'Total'
+                  ]}
+                />
+                <Bar dataKey="count" radius={[0, 8, 8, 0]}>
+                  {top5Categories.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* ===== 2. TOP 5 MOST COMMON LOCATIONS ===== */}
+          <div className="chart-box">
+            <h2 className="chart-title">Top 5 Locations with Most Incidents</h2>
+            <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', textAlign: 'center' }}>
+              Identifies the campus areas where most violence cases have been reported
+            </p>
+            <ResponsiveContainer width="100%" height={350}>
+              <BarChart data={top5Locations} layout="vertical" margin={{ left: 100 }}>
+                <XAxis type="number" />
+                <YAxis type="category" dataKey="location" width={120} />
+                <Tooltip formatter={(value) => [`${value} reports`, 'Total']} />
+                <Bar dataKey="count" fill="#10b981" radius={[0, 8, 8, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* ===== 3. MONTHLY TREND (LAST YEAR) ===== */}
+          <div className="chart-box" style={{ gridColumn: '1 / -1' }}>
+            <h2 className="chart-title">Monthly Report Trends (Last 12 Months)</h2>
+            <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', textAlign: 'center' }}>
+              Track how the number of violence reports has changed over the past year
+            </p>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={monthlyTrend}>
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip formatter={(value) => [`${value} reports`, 'Total']} />
+                <Line 
+                  type="monotone" 
+                  dataKey="count" 
+                  stroke="#7a3aed" 
+                  strokeWidth={3}
+                  dot={{ fill: '#7a3aed', r: 5 }}
+                  activeDot={{ r: 7 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* ===== 4. ANNUAL TREND ===== */}
+          <div className="chart-box" style={{ gridColumn: '1 / -1' }}>
+            <h2 className="chart-title">Annual Report Evolution</h2>
+            <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', textAlign: 'center' }}>
+              Compare the total number of violence reports across different years (current year highlighted in purple)
+            </p>
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={yearlyTrend}>
+                <XAxis dataKey="year" />
+                <YAxis />
+                <Tooltip formatter={(value) => [`${value} reports`, 'Annual Total']} />
+                <Bar dataKey="count" fill="#ef4444" radius={[8, 8, 0, 0]}>
+                  {yearlyTrend.map((entry, index) => (
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={index === yearlyTrend.length - 1 ? '#7a3aed' : '#ef4444'} 
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* ===== 5. AGE RANGE ===== */}
+          <div className="chart-box">
+            <h2 className="chart-title">Distribution by Age Range</h2>
+            <p style={{ fontSize: '0.85rem', color: '#666', marginBottom: '1rem', textAlign: 'center' }}>
+              Shows which age groups are most affected by violence on campus
+            </p>
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={ageData}>
+                <XAxis dataKey="range" />
+                <YAxis />
+                <Tooltip formatter={(value) => [`${value} reports`, 'Total']} />
+                <Bar dataKey="count" fill="#3b82f6" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+        </div>
+      </div>
+
+      <Hero />
     </div>
   );
 }
