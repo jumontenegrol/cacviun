@@ -108,6 +108,13 @@ body {
 
 /* animación suave al pasar el mouse */
 
+.statistics-overview {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 0 clamp(0.8rem, 12vw, 18rem);
+}
 
 .form-title {
   font-size: 2.4rem;
@@ -277,6 +284,9 @@ textarea {
 
 /* Tablets y pantallas medianas */
 @media (max-width: 900px) {
+    .statistics-overview {
+        padding: 0 1rem;
+    }
 
   .report-header {
     padding: 1rem 1.4rem;

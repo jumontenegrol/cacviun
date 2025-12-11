@@ -346,13 +346,7 @@ function Statistics() {
       <h1 className="form-title" style={{ color: "black", textAlign: "center", marginTop: '3rem', marginBottom: "2rem" }}>Statistics</h1>
 
       {/* RESUMEN ESTADÍSTICO */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(2, 1fr)', 
-        gap: '1rem', 
-        marginBottom: '2rem',
-        padding: '0 1rem'
-      }}>
+      <div className="statistics-overview">
         <div style={{ 
           background: 'linear-gradient(135deg, #7a3aed 0%, #9d5cff 100%)', 
           padding: '1.5rem', 
