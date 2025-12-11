@@ -8,11 +8,9 @@ body {
 .Statistics-container {
   background-color: #ede1f7;
   min-height: 100vh;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   color: white;
 }
 
@@ -65,6 +63,7 @@ body {
   text-transform: uppercase;
   font-weight: bold;
   position: sticky;
+
   top: 0;
   border: 1px solid #b98ed2;
 }
@@ -74,14 +73,18 @@ body {
   border: 1px solid #b98ed2;
   max-width: 180px;
   word-wrap: break-word;
+    border-radius: 10px;
+
 }
 
 .tabla-incidentes tbody tr:nth-child(even) {
   background: #9d6baa;
+
 }
 
 .tabla-incidentes tbody tr:nth-child(odd) {
   background: #a873c0;
+
 }
 
 .tabla-incidentes tbody tr:hover {
