@@ -1,70 +1,208 @@
-# Getting Started with Create React App
+# CACVIUN - Violence Reporting System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web application for reporting and visualizing violence incidents at Universidad Nacional de Colombia. This project provides an interactive platform with heatmaps, statistics, and incident tracking capabilities.
 
-## Available Scripts
+**Original Repository:** This project is based on [VIPIngeSoftII](https://github.com/juserranor/VIPIngeSoftII.git)
 
-In the project directory, you can run:
+## 🚀 Technology Stack
 
-### `npm start`
+### Frontend Framework
+- **React** `19.2.0` - Modern UI library for building interactive interfaces
+- **React Router DOM** `7.9.5` - Client-side routing for Single Page Application
+- **TypeScript** - Static typing for enhanced code quality and maintainability
+- **Create React App** - Build tooling with Webpack and Babel
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### State Management
+- **Zustand** `5.0.8` - Lightweight state management with localStorage persistence
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Data Visualization
+- **Recharts** `3.5.1` - Interactive charts library
+  - Pie charts for category distribution
+  - Bar charts for age range analysis
+  - Line charts for temporal trends
+  - Area charts for monthly patterns
 
-### `npm test`
+### Maps & Geolocation
+- **Leaflet** `1.9.4` - Open-source interactive maps library
+- **React Leaflet** `5.0.0` - React components for Leaflet integration
+- **Leaflet.heat** `0.2.0` - Heatmap layer for density visualization
+- **Turf.js** `7.2.0` - Geospatial analysis (point-in-polygon, distance calculations)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### UI Components
+- **React Toastify** `11.0.5` - Toast notifications for user feedback
+- **@fontsource/inria-sans** `5.2.8` - Custom typography
+- **Custom CSS modules** - Component-specific styling
 
-### `npm run build`
+### Testing
+- **Jest** - Testing framework (included in react-scripts)
+- **React Testing Library** `16.3.0` - Component testing utilities
+- **@testing-library/jest-dom** `6.9.1` - Custom DOM matchers
+- **@testing-library/user-event** `13.5.0` - User interaction simulation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Deployment
+- **GitHub Pages** - Static site hosting
+- **gh-pages** - Automated deployment script
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Backend Integration
+- REST API hosted at `https://cacviun-backend.onrender.com`
+- Endpoints: `/report/*`, `/dashboard/*`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📁 Project Structure
 
-### `npm run eject`
+```
+cacviun/
+├── public/                 # Static assets
+│   ├── index.html         # HTML template
+│   ├── manifest.json      # PWA manifest
+│   ├── robots.txt         # SEO configuration
+│   └── assets/            # Public images and resources
+│
+├── src/
+│   ├── assets/            # Application assets
+│   │   └── map.json       # GeoJSON data for campus zones
+│   │
+│   ├── components/        # Reusable React components
+│   │   ├── ConfirmCode.jsx
+│   │   ├── DeleteReport.jsx
+│   │   ├── EditReport.jsx
+│   │   ├── Header.jsx
+│   │   ├── Hero.jsx
+│   │   └── Logo.jsx
+│   │
+│   ├── context/           # React Context providers
+│   │   ├── context.jsx
+│   │   └── role_management.js
+│   │
+│   ├── session/           # Session management
+│   │   └── sessionStore.ts  # Zustand store with persistence
+│   │
+│   ├── styles/            # Component styles
+│   │   ├── App.css
+│   │   ├── ConfirmCode.css
+│   │   ├── Dashboard.css
+│   │   ├── DeleteReport.css
+│   │   ├── EditReport.css
+│   │   ├── Header.css
+│   │   ├── Report.css
+│   │   └── Statistics.css
+│   │
+│   ├── vistas/            # Page-level components (views)
+│   │   ├── AdminHistory.jsx      # Admin report history
+│   │   ├── CreateAccount.jsx     # User registration
+│   │   ├── DefineAdmin.jsx       # Admin role assignment
+│   │   ├── ForgotPassword.jsx    # Password recovery
+│   │   ├── Login.jsx             # Authentication
+│   │   ├── PersonalHistory.jsx   # User's report history
+│   │   ├── Report.jsx            # Create new report
+│   │   └── Statistics.jsx        # Heatmap and statistics dashboard
+│   │
+│   ├── App.jsx            # Main app component with routing
+│   ├── index.jsx          # React app entry point
+│   └── index.css          # Global styles
+│
+├── build/                 # Production build output
+├── package.json           # Dependencies and scripts
+└── README.md             # This file
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🛠️ Available Scripts
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Development
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm start
+```
+Runs the app in development mode at [http://localhost:3000](http://localhost:3000). The page reloads automatically when you make changes.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Testing
 
-## Learn More
+```bash
+npm test
+```
+Launches the test runner in interactive watch mode.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Production Build
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash
+npm run build
+```
+Builds the app for production to the `build` folder. Optimizes React for best performance with minification and hashed filenames.
 
 ### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+npm run deploy
+```
+Builds and deploys the app to GitHub Pages. Automatically runs `predeploy` script before deployment.
 
-### `npm run build` fails to minify
+## 🌐 Key Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Interactive Heatmap
+- Real-time violence incident visualization
+- Geospatial density analysis using Leaflet.heat
+- Fixed map view for desktop, interactive for mobile
+- Recent incidents displayed with markers
+
+### Statistics Dashboard
+- Category distribution (Pie chart)
+- Age group analysis (Bar chart)
+- Temporal trends (Line chart)
+- Monthly patterns by category (Area chart)
+- Stacked bar charts for multi-dimensional analysis
+
+### Report Management
+- Create, edit, and delete reports
+- Location selection with interactive map
+- Real-time validation and feedback
+- User authentication and authorization
+
+### Session Management
+- Persistent sessions using Zustand + localStorage
+- Role-based access control (Admin/User)
+- Secure authentication flow
+
+## 🔧 Configuration
+
+### Environment
+- Backend API: `https://cacviun-backend.onrender.com`
+- GitHub Pages: `https://jumontenegrol.github.io/cacviun/`
+
+### Map Boundaries
+The map is constrained to UNAL campus coordinates:
+- Center: `[4.638193, -74.084046]`
+- Bounds: `[4.6325, -74.0875]` to `[4.6440, -74.0805]`
+
+## 📦 Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/cacviun.git
+
+# Navigate to project directory
+cd cacviun
+
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+```
+
+## 🤝 Contributing
+
+This project follows standard React best practices. When contributing:
+1. Create feature branches from `main`
+2. Write tests for new components
+3. Follow existing code style and naming conventions
+4. Update documentation as needed
+
+## 📄 License
+
+This project is part of an academic Software Engineering II course at Universidad Nacional de Colombia.
+
+## 🙏 Acknowledgments
+
+- Original codebase: [VIPIngeSoftII](https://github.com/juserranor/VIPIngeSoftII.git)
+- Universidad Nacional de Colombia
+- OpenStreetMap for map tiles
+- All contributors and maintainers
