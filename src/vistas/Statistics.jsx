@@ -264,7 +264,7 @@ function Statistics() {
         </p>
         
         {/* FRAME DEL MAPA */}
-        <div style={{ height: "600px", width: "100%"}}>
+        <div style={{ height: "600px", width: "100%" }}>
           <MapContainer
             center={[4.638193, -74.084046]}
             zoom={16}

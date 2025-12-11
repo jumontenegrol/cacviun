@@ -355,6 +355,7 @@ button.text-link:focus {
 
     .hero-row {
         gap: 15px;
+        flex-direction: column;
     }
 
     .hero-info {

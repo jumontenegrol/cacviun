@@ -340,7 +340,7 @@ function AdminHistory() {
 
         <p
           className="Statistics-form-subtitle"
-          style={{ textAlign: "center", fontSize: "1rem", padding: "0.3rem" }}
+          style={{ textAlign: "center", fontSize: "1.1rem", padding: "0.3rem" }}
         >
           In this space you can see Reports made by all users on campus. You can filter as you need.
 

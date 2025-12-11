@@ -320,11 +320,11 @@ function PersonalHistory() {
 
       <div className="Statistics-content">
         <h1 className="Statistics-form-title" style={{ textAlign: "center" }}>
-          PERSONAL REPORT HISTORY
+          Personal Report History
         </h1>
 
-        <p style={{ textAlign: "center", fontSize: "0.9rem" }}>
-          IN THIS SPACE YOU CAN SEE YOUR PERSONAL REPORT HISTORY
+        <p style={{ textAlign: "center", fontSize: "1.1rem" }}>
+          In this space you can see your personal report history. Use the filters below to organize your reports as you wish.
         </p>
         
         {/* ========================================== */}

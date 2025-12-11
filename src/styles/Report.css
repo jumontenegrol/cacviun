@@ -17,7 +17,6 @@ body {
   min-height: 100vh;
   width: 100%;   
   display: flex;
-
   flex-direction: column;
   align-items: stretch;
   color: white;
@@ -249,11 +248,13 @@ textarea {
 }
 
 .yes-btn {
-  background: #2e7d32;
+    background: #2e7332;
+    color: #ffffff;
 }
 
 .no-btn {
-  background: #c62828;
+    background: #c63434;
+    color: #ffffff;
 }
 
 .yes-btn:hover,
